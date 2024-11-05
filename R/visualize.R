@@ -248,23 +248,30 @@ VisualizeAntibody <- function(antibody, mode = "all_atoms") {
 #' @returns NULL
 #'
 #' @examples 
-#' # Read in 2 antibodies
-#' antibody1 <- ReadAntibody(pdb = "data/7uja_chothia.pdb", 
-#'                           numbering = "Chothia",
-#'                           heavy = c("B", "E", "G", "I", "L", "N"),
-#'                           light = c("D", "F", "H", "J", "M", "O"),
-#'                           antigen = c("A", "K", "C"))
+#' # Read in 3 antibodies
+#' antibody1 <- ReadAntibody(pdb = "data/7x94_imgt.pdb", 
+#'                           numbering = "IMGT",
+#'                           heavy = "H",
+#'                           light = "L",
+#'                           antigen = "A")
 #'
-#' antibody2 <- ReadAntibody(pdb = "data/1ahw_chothia.pdb",
+#' antibody2 <- ReadAntibody(pdb = "data/7x96_imgt.pdb",
+#'                           numbering = "IMGT",
+#'                           heavy = "H",
+#'                           light = "L",
+#'                           antigen = "A")
+#' 
+#' antibody3 <- ReadAntibody(pdb = "data/8sau_chothia.pdb",
 #'                           numbering = "Chothia",
-#'                           heavy = c("B", "E"),
-#'                           light = c("A", "D"),
-#'                           antigen = c("C", "F"))
+#'                           heavy = c("C", "H", "M"),
+#'                           light = c("D", "I", "N"),
+#'                           antigen = c("A", "F", "K"))
 #'                           
 #' # Example 1:
-#' # Compare the H3 loops of antibody1 and antibody2 and display the plot
-#' H3Sim <- assessLoopSimilarity(list(Antibody_1 = antibody1, 
-#'                                    Antibody2 = antibody2), 
+#' # Compare the H3 loops of the antibodies and display the plot
+#' H3Sim <- assessLoopSimilarity(list(Antibody1 = antibody1, 
+#'                                    Antibody2 = antibody2,
+#'                                    Antibody3 = antibody3), 
 #'                               'H3')
 #'
 #' DisplaySimilarityPlot(H3Sim, 'H3')
@@ -272,7 +279,9 @@ VisualizeAntibody <- function(antibody, mode = "all_atoms") {
 #' # Example 2:
 #' # Compare the loops of antibody1 and antibody2, weighting H3 higher than 
 #' # other loops
-#' overallSim <- assessOverallLoopSimilarity(list(Antibody1 = antibody1, Antibody2 = antibody2),
+#' overallSim <- assessOverallLoopSimilarity(list(Antibody1 = antibody1, 
+#'                                                Antibody2 = antibody2,
+#'                                                Antibody3 = antibody3),
 #'                                           wH1 = 0.1,
 #'                                           wH2 = 0.1,
 #'                                           wH3 = 0.5,
@@ -281,6 +290,11 @@ VisualizeAntibody <- function(antibody, mode = "all_atoms") {
 #'                                           wL3 = 0.1)
 #' 
 #' DisplaySimilarityPlot(overallSim, 'all')  
+#' 
+#' @importFrom reshape2 melt
+#' @importFrom plotly plot_ly
+#' @importFrom plotly layout
+#' @import dplyr
 #' 
 #' @export
 DisplaySimilarityPlot <- function(similarity_matrix, loop){
@@ -291,7 +305,25 @@ DisplaySimilarityPlot <- function(similarity_matrix, loop){
   }else{
     title <- paste("Similarity between", loop, "loops")
   }
-  heatmap(similarity_matrix, main = title, cexRow = 1, cexCol = 1)
+  
+  # Melt the similarity matrix for plotly
+  meltedMatrix <- melt(similarity_matrix)
+  
+  #display the heatmap
+  heatmap <- plot_ly(
+    data = meltedMatrix,
+    x = ~Var1,
+    y = ~Var2,
+    z = ~value,
+    type = "heatmap",
+    colors = colorRamp(c("#FEFFD9", "#9C0824")),
+    zmin = 0,
+    zmax = 1
+  ) %>% 
+    layout(title = title)
+  print(heatmap)
+  
+  # heatmap(similarity_matrix, main = title, cexRow = 1, cexCol = 1)
   
   return(invisible(NULL))
 }

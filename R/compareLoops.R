@@ -11,17 +11,17 @@
 #' 
 #' @examples
 #' # Read in two antibodies
-#' antibody1 <- ReadAntibody(pdb = "data/7uja_chothia.pdb", 
-#'                           numbering = "Chothia",
-#'                           heavy = c("B", "E", "G", "I", "L", "N"),
-#'                           light = c("D", "F", "H", "J", "M", "O"),
-#'                           antigen = c("A", "K", "C"))
+#' antibody1 <- ReadAntibody(pdb = "data/7x94_imgt.pdb", 
+#'                           numbering = "IMGT",
+#'                           heavy = "H",
+#'                           light = "L",
+#'                           antigen = "A")
 #'
-#' antibody2 <- ReadAntibody(pdb = "data/1ahw_chothia.pdb",
-#'                           numbering = "Chothia",
-#'                           heavy = c("B", "E"),
-#'                           light = c("A", "D"),
-#'                           antigen = c("C", "F"))
+#' antibody2 <- ReadAntibody(pdb = "data/7x96_imgt.pdb",
+#'                           numbering = "IMGT",
+#'                           heavy = "H",
+#'                           light = "L",
+#'                           antigen = "A")
 #' 
 #' # Align their H1 loops
 #' alignLoop(list(antibody1, antibody2), "H1")
@@ -67,17 +67,17 @@ alignLoop <- function(antibodies, loop) {
 #'
 #' @examples
 #' # Read in 2 antibodies
-#' antibody1 <- ReadAntibody(pdb = "data/7uja_chothia.pdb", 
-#'                           numbering = "Chothia",
-#'                           heavy = c("B", "E", "G", "I", "L", "N"),
-#'                           light = c("D", "F", "H", "J", "M", "O"),
-#'                           antigen = c("A", "K", "C"))
+#' antibody1 <- ReadAntibody(pdb = "data/7x94_imgt.pdb", 
+#'                           numbering = "IMGT",
+#'                           heavy = "H",
+#'                           light = "L",
+#'                           antigen = "A")
 #'
-#' antibody2 <- ReadAntibody(pdb = "data/1ahw_chothia.pdb",
-#'                           numbering = "Chothia",
-#'                           heavy = c("B", "E"),
-#'                           light = c("A", "D"),
-#'                           antigen = c("C", "F"))
+#' antibody2 <- ReadAntibody(pdb = "data/7x96_imgt.pdb",
+#'                           numbering = "IMGT",
+#'                           heavy = "H",
+#'                           light = "L",
+#'                           antigen = "A")
 #'                           
 #' # Compare the H3 loops of antibody1 and antibody2
 #' assessLoopSimilarity(list(Antibody_1 = antibody1, Antibody2 = antibody2), 'H3')
@@ -97,11 +97,17 @@ assessLoopSimilarity <- function(antibodies, loop) {
     )
   }
   
+  # Align the loops and get the distance then similarityb between them
   alignedLoops <- alignLoop(antibodies, loop)
   distanceMatrix <- DistanceMatrix(alignedLoops, verbose = FALSE)
   similarityMatrix <- 1 - distanceMatrix
+  
+  # Name the rows and columns after the antibodies
   rownames(similarityMatrix) <- names(antibodies)
   colnames(similarityMatrix) <- names(antibodies)
+  
+  # Remove any NA values
+  similarityMatrix[is.na(similarityMatrix)] <- 0
   
   return(similarityMatrix)
 }
@@ -125,17 +131,17 @@ assessLoopSimilarity <- function(antibodies, loop) {
 #'
 #' @examples
 #' # Read in 2 antibodies
-#' antibody1 <- ReadAntibody(pdb = "data/7uja_chothia.pdb", 
-#'                           numbering = "Chothia",
-#'                           heavy = c("B", "E", "G", "I", "L", "N"),
-#'                           light = c("D", "F", "H", "J", "M", "O"),
-#'                           antigen = c("A", "K", "C"))
+#' antibody1 <- ReadAntibody(pdb = "data/7x94_imgt.pdb", 
+#'                           numbering = "IMGT",
+#'                           heavy = "H",
+#'                           light = "L",
+#'                           antigen = "A")
 #'
-#' antibody2 <- ReadAntibody(pdb = "data/1ahw_chothia.pdb",
-#'                           numbering = "Chothia",
-#'                           heavy = c("B", "E"),
-#'                           light = c("A", "D"),
-#'                           antigen = c("C", "F"))
+#' antibody2 <- ReadAntibody(pdb = "data/7x96_imgt.pdb",
+#'                           numbering = "IMGT",
+#'                           heavy = "H",
+#'                           light = "L",
+#'                           antigen = "A")
 #'                           
 #' # Compare the loops of antibody1 and antibody2, weighting H3 higher than 
 #' # other loops
