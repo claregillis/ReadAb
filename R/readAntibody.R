@@ -40,17 +40,19 @@ source("R/constants.R")
 #' chothia_antibody <- ReadAntibody(pdb = "data/7uja_chothia.pdb", 
 #'                                  numbering = "Chothia",
 #'                                  heavy = c("B", "E", "G", "I", "L", "N"),
-#'                                  light = c("D", "F", "H", "J", "M", "O").
+#'                                  light = c("D", "F", "H", "J", "M", "O"),
 #'                                  antigen = c("A", "K", "C"))
 #' 
 #' imgt_antibody <- ReadAntibody(pdb = "data/7uja_imgt.pdb", 
 #'                               numbering = "IMGT",
 #'                               heavy = c("B", "E", "G", "I", "L", "N"),
-#'                               light = c("D", "F", "H", "J", "M", "O").
+#'                               light = c("D", "F", "H", "J", "M", "O"),
 #'                               antigen = c("A", "K", "C"))
 #'                               
 #' @import dyplr
 #' @import bio3d
+#' 
+#' @export
 ReadAntibody <- function(pdbPath,
                          numbering = 'Chothia',
                          heavy = 'H',
@@ -87,11 +89,11 @@ ReadAntibody <- function(pdbPath,
   
   # Ensure the chain identifiers (heavy1&2, light1&2, antigen) are valid
   # note the antigen may or may not be present, so may be NULL
-  if (!(all(sapply(heavy, IsValidChain, real_chains = chains)) &&
-        all(sapply(light, IsValidChain, real_chains = chains)) &&
+  if (!(all(sapply(heavy, IsValidChain, realChains = chains)) &&
+        all(sapply(light, IsValidChain, realChains = chains)) &&
         (all(
           sapply(antigen, function(one_antigen)
-            IsValidChain(one_antigen, real_chains = chains))
+            IsValidChain(one_antigen, realChains = chains))
         )) ||
         is.null(antigen))) {
     stop(
@@ -121,13 +123,13 @@ ReadAntibody <- function(pdbPath,
   
   
   # Define the color palette
-  colours <- .DEFAULT_COLORS
+  colors <- .DEFAULT_COLORS
   
   # Make an antibody of class antibody and return this
   antibody <- list(
     pdb = pdb,
     loops = loops$atoms,
-    colours = colours,
+    colors = colors,
     antigen_chains = antigen
   )
   class(antibody) <- "antibody"
