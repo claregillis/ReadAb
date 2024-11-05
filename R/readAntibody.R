@@ -1,24 +1,21 @@
-# Source the constants file
-source("R/constants.R")
-
 #' Reads in an antibody from a PDB
 #'
-#' A function that reads in an antibody or antibody-antigen complex from a PDB, 
-#' given the path and re-numbeirng scheme (Kabat, Chothia, IMGT, Martin, AHo, 
-#' Honneger) and saves it in as an Antibody object with CDR loops and antigen 
+#' A function that reads in an antibody or antibody-antigen complex from a PDB,
+#' given the path and re-numbeirng scheme (Kabat, Chothia, IMGT, Martin, AHo,
+#' Honneger) and saves it in as an Antibody object with CDR loops and antigen
 #' identified.
-#' 
+#'
 #' Note AHo and Honneger are equivalent, but both names are often used, so both
 #' are supported
 #'
 #' @param pdbPath A string indicating the path to the antibody PDB file
 #' @param numbering A string indicating the renumbering scheme applied to the
 #'    antibody at pdbPath. Default value is 'Chothia'
-#' @param heavy The identifiers of the heavy chains (may be a vector or single 
+#' @param heavy The identifiers of the heavy chains (may be a vector or single
 #'    value)
-#' @param light The identifiers of the heavy chains (may be a vector or single 
+#' @param light The identifiers of the heavy chains (may be a vector or single
 #'    value)
-#' @param antigen The identifiers of the antigen chains (may be a vector, single 
+#' @param antigen The identifiers of the antigen chains (may be a vector, single
 #'    value, or NULL to indicate no antigen is present)
 #'
 #' @return A list of class 'antibody' with the following components:
@@ -30,28 +27,29 @@ source("R/constants.R")
 #'                - L1: ... all L1 loops from the pdb
 #'                - L2: ... all L2 loops from the pdb
 #'                - L3: ... all L3 loops from the pdb
-#'            - antigen_chains: The names of all antigen chains in the pdb (or 
+#'            - antigen_chains: The names of all antigen chains in the pdb (or
 #'                              NULL if none are specified)
 #'            - colors: A list mapping each component of the pdb (all loops,
 #'                      antigen, and other) to a color for visualization
 #'
 #' @examples
 #' Examples:
-#' chothia_antibody <- ReadAntibody(pdb = "data/7uja_chothia.pdb", 
+#' chothia_antibody <- ReadAntibody(pdb = "data/7uja_chothia.pdb",
 #'                                  numbering = "Chothia",
 #'                                  heavy = c("B", "E", "G", "I", "L", "N"),
 #'                                  light = c("D", "F", "H", "J", "M", "O"),
 #'                                  antigen = c("A", "K", "C"))
-#' 
-#' imgt_antibody <- ReadAntibody(pdb = "data/7uja_imgt.pdb", 
+#'
+#' imgt_antibody <- ReadAntibody(pdb = "data/7uja_imgt.pdb",
 #'                               numbering = "IMGT",
 #'                               heavy = c("B", "E", "G", "I", "L", "N"),
 #'                               light = c("D", "F", "H", "J", "M", "O"),
 #'                               antigen = c("A", "K", "C"))
-#'                               
-#' @import dyplr
-#' @import bio3d
-#' 
+#'
+#'
+#' @importFrom bio3d read.pdb
+#'
+#'
 #' @export
 ReadAntibody <- function(pdbPath,
                          numbering = 'Chothia',
@@ -73,7 +71,7 @@ ReadAntibody <- function(pdbPath,
     numbering == "IMGT" ||
     numbering == "Honneger" ||
     numbering == "Martin" ||
-    numebering == "Kabat"
+    numbering == "Kabat"
   )) {
     stop(
       "numbering argument should be provided a string indicating the
@@ -140,18 +138,18 @@ ReadAntibody <- function(pdbPath,
 #'
 #' Determine whether a chain identifier is valid (a character identifier that
 #' is present in the list of real chain identifiers)
-#' 
+#'
 #' Chain identifiers in PDB files must be a single character
-#' 
+#'
 #' @param chainIdentifier a chain identifier object passed by the user
 #' @param realChains the list of chains present in the PDB file passed by the user
-#' 
-#' @return True iff the chainIdentifier is a single character present in 
+#'
+#' @return True iff the chainIdentifier is a single character present in
 #' realChains
-#' 
+#'
 #' @examples
 #' isValidChain('B', c('A', 'B', 'C'))
-#' 
+#'
 #' isValidChain('D', c('A', 'B', 'C'))
 
 IsValidChain <- function(chainIdentifier, realChains) {
@@ -169,16 +167,16 @@ IsValidChain <- function(chainIdentifier, realChains) {
 #' Note: AHo and Honneger schemes are equivalent
 #'
 #' @param scheme valid numbering scheme (one of 'Chothia', 'AHo', 'Honneger', 'Kabat'
-#' 'Martin', or 'IMGT') 
-#' 
-#' @return A list of residue index ranges for each CDR according to the numbering 
-#' scheme. Formatted as such (s & e denote start and end): 
-#'    list(L1 = c(L1_s, L1_e), L2 = c(L2_s, L2_e), L3 = c(L3_s, L3_e), 
+#' 'Martin', or 'IMGT')
+#'
+#' @return A list of residue index ranges for each CDR according to the numbering
+#' scheme. Formatted as such (s & e denote start and end):
+#'    list(L1 = c(L1_s, L1_e), L2 = c(L2_s, L2_e), L3 = c(L3_s, L3_e),
 #'    H1 = c(H1_s, H1_e), H2 = c(H2, H2_e), H3 = c(H3_s, H3_e))
-#'    
+#'
 #' @examples
 #' GetNumberingRange('Chothia')
-#' 
+#'
 
 GetNumberingRange <- function(scheme) {
   # Get the loop ranges corresponding to the numbering scheme
@@ -208,21 +206,21 @@ GetNumberingRange <- function(scheme) {
 #'
 #' @param loopName The name of the loop for which to select the atoms (ex. 'H1')
 #' @param pdb An open bio3d pdb object
-#' @param chainTypes A data frame with 2 columns (H and L) that stores the 
+#' @param chainTypes A data frame with 2 columns (H and L) that stores the
 #' identifiers of the heavy (H) and light (L) chains in the pdb
 #' @param ranges A list of residue index ranges for each CDR loop
 #'
-#' @return A list of class "select" from bio3d of atoms in the pdb that are part 
+#' @return A list of class "select" from bio3d of atoms in the pdb that are part
 #' of the loop named loopName
 #'
 #' @examples
 #' # Read in a PDB file and note the chain types in a data frame
 #' pdb <- read.pdb("data/1ahw_chothia.pdb")
 #' chainTypes <- data.frame(H = c('B', 'E'), L = c('A', 'D'))
-#' 
+#'
 #' # Get the CDR index ranges for the numbering scheme used in the PDB
 #' ranges <- GetNumberingRange('Chothia')
-#' 
+#'
 #' # Get the atoms in H1 loops in the pdb
 #' H1_atoms <- GetLoopAtoms('H1', pdb, chainTypes, ranges)
 #'

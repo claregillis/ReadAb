@@ -41,7 +41,7 @@ DisplaySimilarityPlot(H3Sim, 'H3')
 # Example 2:
 # Compare the loops of antibody1 and antibody2, weighting H3 higher than 
 # other loops
-overallSim <- assessOverallLoopSimilarity(list(Antibody_1 = antibody1, Antibody2 = antibody2),
+overallSim <- assessOverallLoopSimilarity(list(Antibody1 = antibody1, Antibody2 = antibody2),
                                           wH1 = 0.1,
                                           wH2 = 0.1,
                                           wH3 = 0.5,

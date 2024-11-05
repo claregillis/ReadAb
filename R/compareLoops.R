@@ -1,6 +1,3 @@
-# Source the constants file
-source('R/constants.R')
-
 #' Align the sequences of one loop of multiple antibodies
 #' 
 #' Takes multiple antibodies and the name of a loop (one of 'H1'...'L3') and 
@@ -12,7 +9,7 @@ source('R/constants.R')
 #'
 #' @return An AAStringSet of the aligned loops
 #' 
-#' @example
+#' @examples
 #' # Read in two antibodies
 #' antibody1 <- ReadAntibody(pdb = "data/7uja_chothia.pdb", 
 #'                           numbering = "Chothia",
@@ -27,7 +24,10 @@ source('R/constants.R')
 #'                           antigen = c("C", "F"))
 #' 
 #' # Align their H1 loops
-#' alignmentH1 <- alignLoop(list(antibody1, antibody2), "H1")
+#' alignLoop(list(antibody1, antibody2), "H1")
+#' 
+#' @importFrom DECIPHER AlignSeqs
+#' @importFrom Biostrings AAStringSet
 #' 
 #' @export
 #'
@@ -50,7 +50,7 @@ alignLoop <- function(antibodies, loop) {
   
   #Make an AAStringSet of the sequences and align using default values
   loopSeqSet <- AAStringSet(loopStringSeqs)
-  alignedLoops <- AlignSeqs(loopSeqSet)
+  alignedLoops <- AlignSeqs(loopSeqSet, verbose = FALSE)
   
   return(alignedLoops)
 }
@@ -82,6 +82,8 @@ alignLoop <- function(antibodies, loop) {
 #' # Compare the H3 loops of antibody1 and antibody2
 #' assessLoopSimilarity(list(Antibody_1 = antibody1, Antibody2 = antibody2), 'H3')
 #' 
+#' @importFrom DECIPHER DistanceMatrix
+#' 
 #' @export
 assessLoopSimilarity <- function(antibodies, loop) {
   if (!(all(sapply(antibodies, function(x)
@@ -96,7 +98,7 @@ assessLoopSimilarity <- function(antibodies, loop) {
   }
   
   alignedLoops <- alignLoop(antibodies, loop)
-  distanceMatrix <- DistanceMatrix(alignedLoops)
+  distanceMatrix <- DistanceMatrix(alignedLoops, verbose = FALSE)
   similarityMatrix <- 1 - distanceMatrix
   rownames(similarityMatrix) <- names(antibodies)
   colnames(similarityMatrix) <- names(antibodies)
@@ -136,14 +138,14 @@ assessLoopSimilarity <- function(antibodies, loop) {
 #'                           antigen = c("C", "F"))
 #'                           
 #' # Compare the loops of antibody1 and antibody2, weighting H3 higher than 
-#' other loops
-#' assessLoopSimilarity(list(Antibody_1 = antibody1, Antibody2 = antibody2),
-#'                      wH1 = 0.1,
-#'                      wH2 = 0.1,
-#'                      wH3 = 0.5,
-#'                      wL1 = 0.1,
-#'                      wL2 = 0.1,
-#'                      wL3 = 0.1))
+#' # other loops
+#' assessOverallLoopSimilarity(list(Antibody1 = antibody1, Antibody2 = antibody2),
+#'                             wH1 = 0.1,
+#'                             wH2 = 0.1,
+#'                             wH3 = 0.5,
+#'                             wL1 = 0.1,
+#'                             wL2 = 0.1,
+#'                             wL3 = 0.1)
 #' 
 #' @export
 assessOverallLoopSimilarity <- function(
@@ -182,7 +184,6 @@ assessOverallLoopSimilarity <- function(
   
   overallSimilarityMatrix <- Reduce('+', similarityMatrices)
   return(overallSimilarityMatrix)
-  
 }
 
 # [END]

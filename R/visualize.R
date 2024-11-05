@@ -1,6 +1,3 @@
-#' Source the constants file
-source("R/constants.R")
-
 #' Visualize the provided antibody in 3D
 #' 
 #' Displays the atoms of the antibody in 3D with atoms color coded using the
@@ -24,15 +21,21 @@ source("R/constants.R")
 #'                          antigen = c("A", "K", "C"))
 #' 
 #' # View all atoms of the antibody
-#' visualizeAntibody(antibody, mode = "all")
+#' VisualizeAntibody(antibody, mode = "all_atoms")
 #' 
 #' # View the antibody's heavy atoms
-#' visualizeAntibody(antibody, mode = "heavy")
+#' VisualizeAntibody(antibody, mode = "heavy")
 #' 
 #' # View the backbone only
-#' visualizeAntibody(antibody, mode = "backbone")
+#' VisualizeAntibody(antibody, mode = "backbone")
 #' 
 #' TODO add bonds
+#' 
+#' @import dplyr 
+#' @importFrom plotly plot_ly
+#' @importFrom plotly add_markers
+#' @importFrom plotly add_trace
+#' 
 #' @export
 
 
@@ -41,18 +44,18 @@ VisualizeAntibody <- function(antibody, mode = "all_atoms") {
     stop("antibody argument should be passed an object of class antibody to
          display")
   }
-  if (!(mode %in% c("all_atoms", "heavy", "backbone"))) {
+  if (is.null(mode) || !(mode %in% c("all_atoms", "heavy", "backbone"))) {
     stop("mode must be one of 'all_atoms', 'heavy' or 'backbone'")
   }
   
   if (mode == "all_atoms") {
-    eletype <- ATOM_TYPES
+    eletype <- .ATOM_TYPES
     
   } else if (mode == "backbone") {
     eletype <- c("N", "CA", "C", "O")
     
   } else if (mode == "heavy") {
-    eletype <- na.omit(ATOM_TYPES[!grepl("^H", ATOM_TYPES)])
+    eletype <- na.omit(.ATOM_TYPES[!grepl("^H", .ATOM_TYPES)])
   }
   
   all_atoms <- na.omit(
@@ -126,7 +129,7 @@ VisualizeAntibody <- function(antibody, mode = "all_atoms") {
     antigen <- data.frame(x = numeric(0), y = numeric(0), z = numeric(0))
   }
   
-  plot_ly() %>%
+  plot <- plot_ly() %>%
     # Plot all antibody atoms underneath loop and antigen atoms
     add_markers(
       data = all_atoms,
@@ -229,6 +232,8 @@ VisualizeAntibody <- function(antibody, mode = "all_atoms") {
       name = "Antigen"
     )
   
+  print(plot)
+  
   return(invisible(NULL))
   
 }
@@ -266,22 +271,23 @@ VisualizeAntibody <- function(antibody, mode = "all_atoms") {
 #' 
 #' # Example 2:
 #' # Compare the loops of antibody1 and antibody2, weighting H3 higher than 
-#' other loops
-#' overallSim <- assessLoopSimilarity(list(Antibody_1 = antibody1, Antibody2 = antibody2),
-#'                                    wH1 = 0.1,
-#'                                    wH2 = 0.1,
-#'                                    wH3 = 0.5,
-#'                                    wL1 = 0.1,
-#'                                    wL2 = 0.1,
-#'                                    wL3 = 0.1))
+#' # other loops
+#' overallSim <- assessOverallLoopSimilarity(list(Antibody1 = antibody1, Antibody2 = antibody2),
+#'                                           wH1 = 0.1,
+#'                                           wH2 = 0.1,
+#'                                           wH3 = 0.5,
+#'                                           wL1 = 0.1,
+#'                                           wL2 = 0.1,
+#'                                           wL3 = 0.1)
 #' 
 #' DisplaySimilarityPlot(overallSim, 'all')  
 #' 
 #' @export
-
 DisplaySimilarityPlot <- function(similarity_matrix, loop){
-  if(loop == 'all'){
+  if(!is.null(loop) && loop == 'all'){
     title <- "Similarity across all loops"
+  }else if(is.null(loop) || !(loop %in% .ALL_LOOPS)){
+    stop("loop argument must be one of 'H1', 'H2', 'H3', 'L1', 'L2' or 'L3'")
   }else{
     title <- paste("Similarity between", loop, "loops")
   }

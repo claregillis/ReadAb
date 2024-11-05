@@ -1,6 +1,3 @@
-# Source the constants file
-source("R/constants.R")
-
 #' Get the amino acid sequence of a loop from an antibody
 #' 
 #' Get the amino acid sequence the given loop in the given antibody.
@@ -21,7 +18,7 @@ source("R/constants.R")
 #' 
 #' # Get the sequence of the H1 loop in antibody in the first chain that appears
 #' # in the PDB (in this case, "B")
-#' getLoopSequence(antibody = antibody, loop = 'H1)
+#' getLoopSequence(antibody = antibody, loop = 'H1')
 #' 
 #' @export
 getLoopSequence <- function(antibody, loop) {
