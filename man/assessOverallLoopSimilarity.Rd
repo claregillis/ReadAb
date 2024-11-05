@@ -40,17 +40,17 @@ Note, weights (wH1..wH3) must sum to 1
 }
 \examples{
 # Read in 2 antibodies
-antibody1 <- ReadAntibody(pdb = "data/7uja_chothia.pdb", 
-                          numbering = "Chothia",
-                          heavy = c("B", "E", "G", "I", "L", "N"),
-                          light = c("D", "F", "H", "J", "M", "O"),
-                          antigen = c("A", "K", "C"))
+antibody1 <- ReadAntibody(pdb = "data/7x94_imgt.pdb", 
+                          numbering = "IMGT",
+                          heavy = "H",
+                          light = "L",
+                          antigen = "A")
 
-antibody2 <- ReadAntibody(pdb = "data/1ahw_chothia.pdb",
-                          numbering = "Chothia",
-                          heavy = c("B", "E"),
-                          light = c("A", "D"),
-                          antigen = c("C", "F"))
+antibody2 <- ReadAntibody(pdb = "data/7x96_imgt.pdb",
+                          numbering = "IMGT",
+                          heavy = "H",
+                          light = "L",
+                          antigen = "A")
                           
 # Compare the loops of antibody1 and antibody2, weighting H3 higher than 
 # other loops
