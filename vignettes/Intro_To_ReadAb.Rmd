@@ -1,0 +1,181 @@
+---
+title: "An introduction to ReadAb"
+author: "Clare Gillis"
+date: "`r format(Sys.time(), '%d %b %Y')`"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    number_sections: false
+vignette: >
+  %\VignetteIndexEntry{An introduction to ReadAb}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+opts_chunk$set(fig.align = "center", 
+               out.width = "90%",
+               fig.width = 6, fig.height = 5.5,
+               dev.args=list(pointsize=10),
+               par = TRUE, # needed for setting hook 
+               collapse = TRUE, # collapse input & ouput code in chunks
+               warning = FALSE)
+knit_hooks$set(par = function(before, options, envir)
+  { if(before && options$fig.show != "none") 
+       par(family = "sans", mar=c(4.1,4.1,1.1,1.1), mgp=c(3,1,0), tcl=-0.5)
+})
+set.seed(1) # for exact reproducibility
+```
+
+## Introduction
+
+`ReadAb` is an R package developed for reading antibody structures, identifying
+CDRs (complimentarity determining regions, AKA binding loops), and visualizing and performing 
+analysis on these structures.
+
+To download **ReadAb**, use the following commands:
+
+``` r
+require("devtools")
+devtools::install_github("claregillis/ReadAb", build_vignettes = TRUE)
+library("ReadAb")
+```
+
+To list all sample datasets available in the package:
+``` r
+data(package = "ReadAb")
+```
+
+<br>
+
+## Functionality
+
+### Read an antibody structure
+
+The `ReadAntibody` function allows the user to read an antibody structure from 
+a PDB file using the path of the file, the renumbering scheme used to denote the
+locations of loops, and the identifiers of heavy, light, and antigen chains. 
+The function returns a list with the following components:
+
+#### pdb: 
+A list of class 'pdb' from the bio3d package containing information on the 
+entire input PDB. The structure of this object can be found here: TODO
+
+#### loops:
+a list with the following 6 components
+
+##### H1: 
+A list of class 'pdb' from bio3d holding all H1 atoms from the PDB.
+
+##### H2:
+A list of class 'pdb' from bio3d holding all H2 atoms from the PDB.
+
+##### H3:
+A list of class 'pdb' from bio3d holding all H3 atoms from the PDB.
+
+##### L1:
+A list of class 'pdb' from bio3d holding all L1 atoms from the PDB.
+
+##### L2:
+A list of class 'pdb' from bio3d holding all L2 atoms from the PDB.
+
+##### L3:
+A list of class 'pdb' from bio3d holding all L3 atoms from the PDB.
+
+For example, to read the antibody PDB 7uja renumbered with the Chothia scheme 
+(provided in the dataset):
+```{r}
+ab7uja <- ReadAntibody(
+  'R/7uja_chothia.pdb',
+  numbering = 'Chothia',
+  heavy = c("B", "E", "G", "I", "L", "N"),
+  light = c("D", "F", "H", "J", "M", "O"),
+  antigen = c("A", "K", "C")
+)
+```
+Note: you can find the identifiers for heavy, light, and antigen chains at the 
+top of the PDB.
+
+To access the bio3d pdb object for each loop, index it from the loops sublist
+using the name of the loop:
+```{r}
+H1 <- ab7uja$loops$H1
+```
+
+### Analyses of loop similarity
+Antibody binding specificity is based on binding loop sequences. With this in mind
+the comparative functions for ReadAb were developed to automatically assess similarity
+betweeen binding loops of multiple antibodies.
+
+The loop comparison functions available are `assessLoopSimilarity` which
+assesses similarity between one binding loops across multiple antibodies, and
+`assessOverallLoopSimilarity` which assesses similarity of all loops across
+multiple antibodies with the option of weighting loops differently. 
+
+For example, to compare the H1 loops of the 1ahw and 7uja antibodies from the dataset:
+```{r}
+ab1ahw <- ReadAntibody(
+  pdb = "data/1ahw_chothia.pdb",
+  numbering = "Chothia",
+  heavy = c("B", "E"),
+  light = c("A", "D"),
+  antigen = c("C", "F")
+)
+
+assessLoopSimilarity(c(ab7uja, ab1ahw), 'H1')
+```
+
+To compare all loops of the 1ahw and 7uja antibodies from the dataset, wieghting
+the H3 loop more highly:
+```{r}
+assessOverallLoopSimilarity(
+  c(ab7uja, ab1ahw),
+  wH1 = 0.1,
+  wH2 = 0.1,
+  wH3 = 0.5,
+  wL1 = 0.1,
+  wL2 = 0.1,
+  wL3 = 0.1
+)
+
+```
+
+### Visualization
+
+#### Iteractive visualization of an antibody structure
+The `VisualizeAntibody` function is designed to display the atoms of an antibody
+structure in 3D with different components color coded. This function can be used
+in 3 modes: 'all' to display all atoms, 'heavy' to display all non-hydrogen atoms,
+and 'backbone' to display all backbone atoms (i.e. omit sidechains.)
+
+For example, to display all atoms of the 7uja antibody:
+```{r}
+visualizeAntibody(ab7uja, mode = "all")
+```
+
+To change the color of antibody component, use the `setComponentColor` function.
+To display the backbone atoms of the 7uja antibody with the antigen colored cyan:
+```{r}
+cyanAgAb7uja <- setComponentColor(ab7uja, 'antigen', '#42f5dd')
+visualizeAntibody(cyanAgAb7uja, mode = "backbone")
+
+```
+
+#### Heat map of loop sequence similarity
+Loop similarity matrices from `assessLoopSimilarity` and 
+`assessOverallLoopSimilarity` can be visualized as heatmaps using the 
+`DisplaySimilarityPlot` function.
+
+For example, to visualize the similarity of H3 binding loops between the 7uja and
+1ahw antibodies from the dataset:
+```{r}
+H3Similarity <- assessLoopSimilarity(c(ab7uja, ab1ahw), 'H3')
+displaySimilarityPlot(H3Similarity)
+```
+
+
+```{r}
+sessionInfo()
+```
+# [END]
