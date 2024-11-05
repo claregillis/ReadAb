@@ -29,3 +29,4 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 VignetteBuilder: knitr
 URL: https://github.com/claregillis/ReadAb.git
+BugReports: https://github.com/claregillis/ReadAb.git/issues
