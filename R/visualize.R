@@ -1,8 +1,40 @@
+#' Source the constants file
 source("R/constants.R")
-#'
-#'Visualize antibody data ina variety of ways
-#' TODO option_to_show_heteroatoms
-#'
+
+#' Visualize the provided antibody in 3D
+#' 
+#' Displays the atoms of the antibody in 3D with atoms color coded using the
+#' colors element of the antibody. Can display in 3 modes: "all_atoms" to show
+#' all atoms of the antibody, "heavy" to show only heavy atoms (all atoms other
+#' than hydrogen), or "backbone" to omit sidechain and hydrogen atoms.
+#' 
+#' @param antibody A list of class 'antibody'
+#' @param mode A string descibing the types of atoms to display. Must be one of:
+#'             "all_atoms": to display all atoms
+#'             "heavy": to display all heavy (non-hydrogen) atoms
+#'             "backbone": to omit sidechain and hydrogen atoms from the plot
+#' 
+#' @return NULL
+#' 
+#' @examples
+#' antibody <- ReadAntibody(pdb = "data/7uja_chothia.pdb", 
+#'                          numbering = "Chothia",
+#'                          heavy = c("B", "E", "G", "I", "L", "N"),
+#'                          light = c("D", "F", "H", "J", "M", "O"),
+#'                          antigen = c("A", "K", "C"))
+#' 
+#' # View all atoms of the antibody
+#' visualizeAntibody(antibody, mode = "all")
+#' 
+#' # View the antibody's heavy atoms
+#' visualizeAntibody(antibody, mode = "heavy")
+#' 
+#' # View the backbone only
+#' visualizeAntibody(antibody, mode = "backbone")
+#' 
+#' TODO add bonds
+#' @export
+
 
 VisualizeAntibody <- function(antibody, mode = "all_atoms") {
   if (!(class(antibody) == 'antibody')) {
@@ -80,7 +112,7 @@ VisualizeAntibody <- function(antibody, mode = "all_atoms") {
   )
   
   
-  if (!(is.null(antibody$antigen_chain))) {
+  if (!(is.null(antibody$antigen_chains))) {
     antigenCoords <- atom.select(pdb, type = 'ATOM', chain = antibody$antigen)
     antigenAtoms <- trim.pdb(antibody$pdb, inds = antigenCoords)
     antigen <- na.omit(
@@ -91,18 +123,18 @@ VisualizeAntibody <- function(antibody, mode = "all_atoms") {
       )
     )
   } else{
-    antigen <- data.frame(x = c(), y = c(), z = c())
+    antigen <- data.frame(x = numeric(0), y = numeric(0), z = numeric(0))
   }
   
   plot_ly() %>%
-    # Plot all antibody atoms below loop and antigen atoms
+    # Plot all antibody atoms underneath loop and antigen atoms
     add_markers(
       data = all_atoms,
       x = ~ x,
       y = ~ y,
       z = ~ z,
       marker = list(
-        color = antibody$colours$other,
+        color = antibody$color$other,
         size = 1,
         opacity = 0.5
       ),
@@ -116,7 +148,7 @@ VisualizeAntibody <- function(antibody, mode = "all_atoms") {
       y = ~ y,
       z = ~ z,
       marker = list(
-        color = antibody$colours$H1,
+        color = antibody$colors$H1,
         size = 1.5,
         opacity = 1
       ),
@@ -128,7 +160,7 @@ VisualizeAntibody <- function(antibody, mode = "all_atoms") {
       y = ~ y,
       z = ~ z,
       marker = list(
-        color = antibody$colours$H2,
+        color = antibody$colors$H2,
         size = 1.5,
         opacity = 1
       ),
@@ -140,7 +172,7 @@ VisualizeAntibody <- function(antibody, mode = "all_atoms") {
       y = ~ y,
       z = ~ z,
       marker = list(
-        color = antibody$colours$H3,
+        color = antibody$colors$H3,
         size = 1.5,
         opacity = 1
       ),
@@ -152,7 +184,7 @@ VisualizeAntibody <- function(antibody, mode = "all_atoms") {
       y = ~ y,
       z = ~ z,
       marker = list(
-        color = antibody$colours$L1,
+        color = antibody$colors$L1,
         size = 1.5,
         opacity = 1
       ),
@@ -164,7 +196,7 @@ VisualizeAntibody <- function(antibody, mode = "all_atoms") {
       y = ~ y,
       z = ~ z,
       marker = list(
-        color = antibody$colours$L2,
+        color = antibody$colors$L2,
         size = 1.5,
         opacity = 1
       ),
@@ -176,7 +208,7 @@ VisualizeAntibody <- function(antibody, mode = "all_atoms") {
       y = ~ y,
       z = ~ z,
       marker = list(
-        color = antibody$colours$L3,
+        color = antibody$colors$L3,
         size = 1.5,
         opacity = 1
       ),
@@ -190,22 +222,73 @@ VisualizeAntibody <- function(antibody, mode = "all_atoms") {
       y = ~ y,
       z = ~ z,
       marker = list(
-        color = antibody$colours$antigen,
+        color = antibody$colors$antigen,
         size = 1,
         opacity = 1
       ),
       name = "Antigen"
     )
   
+  return(invisible(NULL))
+  
 }
 
-displaySimilarityPlot <- function(similarity_matrix, loop){
-  if(loops == 'all'){
+#' Display a heatmap of a matrix denoting the similarity between antibody loops
+#' 
+#' @param similarity_matrix A similarity matrix produced by 
+#' `assessLoopSimilarity` or `assessOverallLoopSimilarity`
+#' @param loop The name of the loop being compared (should be one of 'H1', 'H2', 
+#' 'H3', 'L1', 'L2', 'L3', or 'all')
+#' 
+#' @returns NULL
+#'
+#' @examples 
+#' # Read in 2 antibodies
+#' antibody1 <- ReadAntibody(pdb = "data/7uja_chothia.pdb", 
+#'                           numbering = "Chothia",
+#'                           heavy = c("B", "E", "G", "I", "L", "N"),
+#'                           light = c("D", "F", "H", "J", "M", "O"),
+#'                           antigen = c("A", "K", "C"))
+#'
+#' antibody2 <- ReadAntibody(pdb = "data/1ahw_chothia.pdb",
+#'                           numbering = "Chothia",
+#'                           heavy = c("B", "E"),
+#'                           light = c("A", "D"),
+#'                           antigen = c("C", "F"))
+#'                           
+#' # Example 1:
+#' # Compare the H3 loops of antibody1 and antibody2 and display the plot
+#' H3Sim <- assessLoopSimilarity(list(Antibody_1 = antibody1, 
+#'                                    Antibody2 = antibody2), 
+#'                               'H3')
+#'
+#' DisplaySimilarityPlot(H3Sim, 'H3')
+#' 
+#' # Example 2:
+#' # Compare the loops of antibody1 and antibody2, weighting H3 higher than 
+#' other loops
+#' overallSim <- assessLoopSimilarity(list(Antibody_1 = antibody1, Antibody2 = antibody2),
+#'                                    wH1 = 0.1,
+#'                                    wH2 = 0.1,
+#'                                    wH3 = 0.5,
+#'                                    wL1 = 0.1,
+#'                                    wL2 = 0.1,
+#'                                    wL3 = 0.1))
+#' 
+#' DisplaySimilarityPlot(overallSim, 'all')  
+#' 
+#' @export
+
+DisplaySimilarityPlot <- function(similarity_matrix, loop){
+  if(loop == 'all'){
     title <- "Similarity across all loops"
   }else{
     title <- paste("Similarity between", loop, "loops")
   }
-  heatmap(similarity_matrix, main = title)
+  heatmap(similarity_matrix, main = title, cexRow = 1, cexCol = 1)
+  
+  return(invisible(NULL))
 }
 
-VisualizeAntibody(antibody, "backbone")
+
+# [END]
