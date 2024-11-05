@@ -31,7 +31,7 @@ getLoopSequence <- function(antibody, loop) {
          which to retreive a loop sequence."
     )
   }
-  if (!(loop %in% ALL_LOOPS)) {
+  if (!(loop %in% .ALL_LOOPS)) {
     stop(
       "loop argument should be passed the name of an antibody loop. Must be
          one of 'H1', 'H2', 'H3', 'L1', 'L2', or 'L3'"
@@ -45,9 +45,9 @@ getLoopSequence <- function(antibody, loop) {
   first_chain = selected_loop$atom$chain[1]
   
   # Get the sequence of the loop in the first chain
-  threeLetterCodes <- selected_loop$atom$resid[selected_loop$atom$elety == 'CA' &&
+  threeLetterCodes <- selected_loop$atom$resid[selected_loop$atom$elety == 'CA' &
                                                  selected_loop$atom$chain == first_chain]
-  oneLetterCodes <- CODE_THREE_TO_ONE[threeLetterCodes]
+  oneLetterCodes <- .CODE_THREE_TO_ONE[threeLetterCodes]
   seq <- paste(oneLetterCodes, collapse = "")
   
   return(seq)
@@ -84,7 +84,7 @@ getLoopSequence <- function(antibody, loop) {
 #'
 #' @export
 setComponentColor <- function(antibody, component, color) {
-  if (!(component %in% ALL_LOOPS ||
+  if (!(component %in% .ALL_LOOPS ||
         component %in% c('other', 'antigen', 'heavy', 'light'))) {
     stop(
       "component argument should be passed the name of the component to
