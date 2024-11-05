@@ -21,17 +21,17 @@ returns an alignment of the sequences of this loop in the antibodies
 }
 \examples{
 # Read in two antibodies
-antibody1 <- ReadAntibody(pdb = "data/7uja_chothia.pdb", 
-                          numbering = "Chothia",
-                          heavy = c("B", "E", "G", "I", "L", "N"),
-                          light = c("D", "F", "H", "J", "M", "O"),
-                          antigen = c("A", "K", "C"))
+antibody1 <- ReadAntibody(pdb = "data/7x94_imgt.pdb", 
+                          numbering = "IMGT",
+                          heavy = "H",
+                          light = "L",
+                          antigen = "A")
 
-antibody2 <- ReadAntibody(pdb = "data/1ahw_chothia.pdb",
-                          numbering = "Chothia",
-                          heavy = c("B", "E"),
-                          light = c("A", "D"),
-                          antigen = c("C", "F"))
+antibody2 <- ReadAntibody(pdb = "data/7x96_imgt.pdb",
+                          numbering = "IMGT",
+                          heavy = "H",
+                          light = "L",
+                          antigen = "A")
 
 # Align their H1 loops
 alignLoop(list(antibody1, antibody2), "H1")

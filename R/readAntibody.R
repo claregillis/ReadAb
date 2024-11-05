@@ -40,11 +40,11 @@
 #'                                  light = c("D", "F", "H", "J", "M", "O"),
 #'                                  antigen = c("A", "K", "C"))
 #'
-#' imgt_antibody <- ReadAntibody(pdb = "data/7uja_imgt.pdb",
+#' imgt_antibody <- ReadAntibody(pdb = "data/7ru4_imgt.pdb",
 #'                               numbering = "IMGT",
-#'                               heavy = c("B", "E", "G", "I", "L", "N"),
-#'                               light = c("D", "F", "H", "J", "M", "O"),
-#'                               antigen = c("A", "K", "C"))
+#'                               heavy = "H",
+#'                               light = "L",
+#'                               antigen = "A")
 #'
 #'
 #' @importFrom bio3d read.pdb
