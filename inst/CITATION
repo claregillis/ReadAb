@@ -1,0 +1,12 @@
+citHeader("To cite ReadAb in publications use:")
+
+citEntry(entry = "Unpublished",
+  title        = "ReadAb: Antibody Reading, Visualization, and Loop Comparison Toolkit",
+  author       = "Clare Gillis",
+  note         = "Unpublished",
+  year         = "2024",
+
+  textVersion  =
+  paste("Gillis, C. (2024) ReadAb: Antibody Reading, Visualization, and Loop Comparison Toolkit.
+        Unpublished. URL https://github.com/claregillis/ReadAb").
+)
