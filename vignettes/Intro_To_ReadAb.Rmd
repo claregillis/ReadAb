@@ -87,7 +87,7 @@ For example, to read the antibody PDB 7uja renumbered with the Chothia scheme
 (provided in the dataset):
 ```{r}
 library(ReadAb)
-ab7x94 <- ReadAntibody(pdb = system.file("data/7x96_imgt.pdb", package = ReadAb),
+ab7x94 <- ReadAb::ReadAntibody(pdb = system.file("data/7x96_imgt.pdb", package = ReadAb),
                           numbering = "IMGT",
                           heavy = "H",
                           light = "L",
@@ -114,19 +114,19 @@ multiple antibodies with the option of weighting loops differently.
 
 For example, to compare the H1 loops of the 1ahw and 7uja antibodies from the dataset:
 ```{r}
-ab7x96 <- ReadAntibody(pdb = "data/7x96_imgt.pdb",
+ab7x96 <- ReadAb::ReadAntibody(pdb = system.file("data/7x96_imgt.pdb", package = ReadAb),
                           numbering = "IMGT",
                           heavy = "H",
                           light = "L",
                           antigen = "A")
 
-AssessLoopSimilarity(c(ab7x94, ab7x96), 'H1')
+ReadAb::AssessLoopSimilarity(c(ab7x94, ab7x96), 'H1')
 ```
 
 To compare all loops of the 1ahw and 7uja antibodies from the dataset, wieghting
 the H3 loop more highly:
 ```{r}
-AssessOverallLoopSimilarity(
+ReadAb::AssessOverallLoopSimilarity(
   c(ab7x94, ab7x96),
   wH1 = 0.1,
   wH2 = 0.1,
@@ -148,14 +148,14 @@ and 'backbone' to display all backbone atoms (i.e. omit sidechains.)
 
 For example, to display all atoms of the 7uja antibody:
 ```{r}
-VisualizeAntibody(ab7x94, mode = "all")
+ReadAb::VisualizeAntibody(ab7x94, mode = "all")
 ```
 
 To change the color of antibody component, use the `setComponentColor` function.
 To display the backbone atoms of the 7uja antibody with the antigen colored cyan:
 ```{r}
-cyanAgAb7x94 <- SetComponentColor(ab7x94, 'antigen', '#42f5dd')
-VisualizeAntibody(cyanAgAb7x94, mode = "backbone")
+cyanAgAb7x94 <- ReadAb::SetComponentColor(ab7x94, 'antigen', '#42f5dd')
+ReadAb::VisualizeAntibody(cyanAgAb7x94, mode = "backbone")
 
 ```
 
@@ -167,8 +167,8 @@ Loop similarity matrices from `assessLoopSimilarity` and
 For example, to visualize the similarity of H3 binding loops between the 7uja and
 1ahw antibodies from the dataset:
 ```{r}
-H3Similarity <- AssessLoopSimilarity(c(ab7x94, ab7x96), 'H3')
-DisplaySimilarityPlot(H3Similarity)
+H3Similarity <- ReadAb::AssessLoopSimilarity(c(ab7x94, ab7x96), 'H3')
+ReadAb::DisplaySimilarityPlot(H3Similarity)
 ```
 
 ## Package Refernces
