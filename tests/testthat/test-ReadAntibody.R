@@ -55,8 +55,8 @@ test_that("ReadAntibody correctly identifies valid and invalid chains", {
   pdb <- read.pdb(system.file("data/7uja_chothia.pdb", package = "ReadAb"))
   realChains <- unique(pdb$atom$chain)
   
-  expect_true(IsValidChain("A", realChains))
-  expect_false(IsValidChain("Z", realChains))
+  expect_true(.IsValidChain("A", realChains))
+  expect_false(.IsValidChain("Z", realChains))
 })
 
 # [END]
