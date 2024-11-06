@@ -37,7 +37,14 @@ To install the latest version of the package:
 install.packages("devtools")
 library("devtools")
 devtools::install_github("claregillis/ReadAb", build_vignettes = TRUE)
-library("TestingPackage")
+library("ReadAb")
+```
+
+NOTE: I am having issues with the vignette failing to build, so you may
+need to install using
+
+``` r
+devtools::install_github("claregillis/ReadAb", build_vignettes = FALSE)
 ```
 
 ## Overview
@@ -83,6 +90,16 @@ currently working at [Fable
 Therapeutics](https://www.fabletherapeutics.com/) on a project involved
 in antibody design. I wanted to create a useful toolkit for manipulating
 anitbodies in R since there are none that I am aware of.
+
+The `bio3d` package which reads and stores pdb objects was relied upon
+in ReadAntibody for reading a pdb and storing the contants and its
+loops. The `plotly` package is used in both VisualizeAntibody and
+DisplaySimilarityMatrix to display plots (an interactive 3D plot in the
+former, and a heatmap in the latter.) The `Biostrings` package is used
+in the alignLoop function to represent the amino acid sequenc of the
+loop, and the `DECIPHER` package is used in alignLoops and
+assessLoopSimilarity to align sequences and calculate a distance matrix
+between them.
 
 Generative AI was used to help with creating unit tests for each
 function. Specifically, ChatGPT was prompted with the contents of the

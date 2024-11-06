@@ -42,7 +42,12 @@ To install the latest version of the package:
 install.packages("devtools")
 library("devtools")
 devtools::install_github("claregillis/ReadAb", build_vignettes = TRUE)
-library("TestingPackage")
+library("ReadAb")
+```
+NOTE: I am having issues with the vignette failing to build, so you may need to
+install using 
+```r
+devtools::install_github("claregillis/ReadAb", build_vignettes = FALSE)
 ```
 
 ## Overview
