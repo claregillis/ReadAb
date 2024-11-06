@@ -86,13 +86,12 @@ A list of class 'pdb' from bio3d holding all L3 atoms from the PDB.
 For example, to read the antibody PDB 7uja renumbered with the Chothia scheme 
 (provided in the dataset):
 ```{r}
-ab7uja <- ReadAntibody(
-  'R/7uja_chothia.pdb',
-  numbering = 'Chothia',
-  heavy = c("B", "E", "G", "I", "L", "N"),
-  light = c("D", "F", "H", "J", "M", "O"),
-  antigen = c("A", "K", "C")
-)
+library(ReadAb)
+ab7x94 <- ReadAntibody(pdb = system.file("data/7x96_imgt.pdb", package = ReadAb),
+                          numbering = "IMGT",
+                          heavy = "H",
+                          light = "L",
+                          antigen = "A")
 ```
 Note: you can find the identifiers for heavy, light, and antigen chains at the 
 top of the PDB.
@@ -100,7 +99,7 @@ top of the PDB.
 To access the bio3d pdb object for each loop, index it from the loops sublist
 using the name of the loop:
 ```{r}
-H1 <- ab7uja$loops$H1
+H1 <- ab7x94$loops$H1
 ```
 
 ### Analyses of loop similarity
@@ -115,22 +114,20 @@ multiple antibodies with the option of weighting loops differently.
 
 For example, to compare the H1 loops of the 1ahw and 7uja antibodies from the dataset:
 ```{r}
-ab1ahw <- ReadAntibody(
-  pdb = "data/1ahw_chothia.pdb",
-  numbering = "Chothia",
-  heavy = c("B", "E"),
-  light = c("A", "D"),
-  antigen = c("C", "F")
-)
+ab7x96 <- ReadAntibody(pdb = "data/7x96_imgt.pdb",
+                          numbering = "IMGT",
+                          heavy = "H",
+                          light = "L",
+                          antigen = "A")
 
-assessLoopSimilarity(c(ab7uja, ab1ahw), 'H1')
+AssessLoopSimilarity(c(ab7x94, ab7x96), 'H1')
 ```
 
 To compare all loops of the 1ahw and 7uja antibodies from the dataset, wieghting
 the H3 loop more highly:
 ```{r}
-assessOverallLoopSimilarity(
-  c(ab7uja, ab1ahw),
+AssessOverallLoopSimilarity(
+  c(ab7x94, ab7x96),
   wH1 = 0.1,
   wH2 = 0.1,
   wH3 = 0.5,
@@ -151,14 +148,14 @@ and 'backbone' to display all backbone atoms (i.e. omit sidechains.)
 
 For example, to display all atoms of the 7uja antibody:
 ```{r}
-visualizeAntibody(ab7uja, mode = "all")
+VisualizeAntibody(ab7x94, mode = "all")
 ```
 
 To change the color of antibody component, use the `setComponentColor` function.
 To display the backbone atoms of the 7uja antibody with the antigen colored cyan:
 ```{r}
-cyanAgAb7uja <- setComponentColor(ab7uja, 'antigen', '#42f5dd')
-visualizeAntibody(cyanAgAb7uja, mode = "backbone")
+cyanAgAb7x94 <- SetComponentColor(ab7x94, 'antigen', '#42f5dd')
+VisualizeAntibody(cyanAgAb7x94, mode = "backbone")
 
 ```
 
@@ -170,12 +167,47 @@ Loop similarity matrices from `assessLoopSimilarity` and
 For example, to visualize the similarity of H3 binding loops between the 7uja and
 1ahw antibodies from the dataset:
 ```{r}
-H3Similarity <- assessLoopSimilarity(c(ab7uja, ab1ahw), 'H3')
-displaySimilarityPlot(H3Similarity)
+H3Similarity <- AssessLoopSimilarity(c(ab7x94, ab7x96), 'H3')
+DisplaySimilarityPlot(H3Similarity)
 ```
 
+## Package Refernces
+- Gillis, C (2024) ReadAb: Antibody Reading, Visualization, and Loop Comparison Toolkit. Unpublished. https://github.com/claregillis/ReadAb.git
+
+<br>
+
+## Other References
+
+- Chiu, M. L., Goulet, D. R., Teplyakov, A., & Gilliland, G. L. (2019). Antibody structure and function: The basis for engineering therapeutics. *Antibodies* (Basel), 8(4), Article 55. https://doi.org/10.3390/antib8040055
+
+- Chothia, C., Lesk, A. M., Tramontano, A., Levitt, M., Smith-Gill, S. J., Air, G., et al. (1989). Conformations of immunoglobulin hypervariable regions. *Nature*, 342:6252, 877–883. Available from: [https://www.nature.com/articles/342877a0](https://www.nature.com/articles/342877a0)
+
+- Dondelinger, M., Filée, P., Sauvage, E., Quinting, B., Muyldermans, S., Galleni, M., & Vandevenne, M. S. (2018). Understanding the significance and implications of antibody numbering and antigen-binding surface/residue definition. *Frontiers in Immunology*, 9, Article 2278. https://doi.org/10.3389/fimmu.2018.02278
+
+- Dunbar, J., Krawczyk, K., Leem, J., Baker, T., Fuchs, A., Georges, G., Shi, J., & Deane, C. M. (2014). SAbDab: The structural antibody database. *Nucleic Acids Research*, 42(D1), D1140–D1146. https://doi.org/10.1093/nar/gkt1043
+
+- Grant, B. J., Skjaerven, L., & Yao, X. Q. (2021). The Bio3D packages for structural bioinformatics. *Protein Science*, 30(1), 20–30. https://doi.org/10.1002/pro.3923
+
+- Honegger, A., Plückthun, A. (2001). Yet Another Numbering Scheme for Immunoglobulin Variable Domains: An Automatic Modeling and Analysis Tool. *J Mol Biol*, 309(3), 657–670.
+
+- Kabat EA, Te Wu T, Bilofsky H, (U.S.) NI of H. Sequences of Immunoglobulin Chains: Tabulation and Analysis of Amino Acid Sequences of Precursors, V-regions, C-regions, J-Chain and BP-Microglobulins, 1979. Department of Health, Education, and Welfare, Public Health Service, National Institutes of Health (1979). Available online at: [https://books.google.com/books?id=OpW8-ibqyvcC](https://books.google.com/books?id=OpW8-ibqyvcC)
+
+- Lefranc, M. P., Lefranc, G. (2020). Immunoglobulins or Antibodies: IMGT® Bridging Genes, Structures and Functions. *Biomedicines*, 8(9):319. Available from: [https://www.mdpi.com/2227-9059/8/9/319/htm](https://www.mdpi.com/2227-9059/8/9/319/htm)
+
+- Pagès, H., Aboyoun, P., Gentleman, R., & DebRoy, S. (2024). Biostrings: Efficient manipulation of biological strings (R package version 2.72.1). https://doi.org/10.18129/B9.bioc.Biostrings
+
+- Sievert, C. (2020). Interactive Web-Based Data Visualization with R, plotly, and shiny. Chapman and Hall/CRC Florida.
+
+- Wickham, H. (2007). Reshaping data with the reshape package. *Journal of Statistical Software*, 21(12).
+
+- Wickham H, François R, Henry L, Müller K, Vaughan D (2023). *dplyr: A Grammar of Data Manipulation*. R package version 1.1.4. [https://CRAN.R-project.org/package=dplyr](https://CRAN.R-project.org/package=dplyr)
+
+- Wright, E. S. (2016). “Using DECIPHER v2.0 to Analyze Big Biological Sequence Data in R.” *The R Journal*, *8*(1), 352-359.
+
+----
 
 ```{r}
 sessionInfo()
 ```
+
 # [END]
