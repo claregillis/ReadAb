@@ -2,7 +2,7 @@
 % Please edit documentation in R/readAntibody.R
 \name{ReadAntibody}
 \alias{ReadAntibody}
-\title{Reads in an antibody from a PDB}
+\title{Read in an antibody from a PDB}
 \usage{
 ReadAntibody(
   pdbPath,
@@ -54,13 +54,13 @@ are supported
 }
 \examples{
 Examples:
-chothia_antibody <- ReadAntibody(pdb = "data/7uja_chothia.pdb",
+chothiaAntibody <- ReadAntibody(pdb = "data/7uja_chothia.pdb",
                                  numbering = "Chothia",
                                  heavy = c("B", "E", "G", "I", "L", "N"),
                                  light = c("D", "F", "H", "J", "M", "O"),
                                  antigen = c("A", "K", "C"))
 
-imgt_antibody <- ReadAntibody(pdb = "data/7ru4_imgt.pdb",
+imgtAntibody <- ReadAntibody(pdb = "data/7ru4_imgt.pdb",
                               numbering = "IMGT",
                               heavy = "H",
                               light = "L",

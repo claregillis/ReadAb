@@ -1,5 +1,5 @@
 #' Get the amino acid sequence of a loop from an antibody
-#' 
+#'
 #' Get the amino acid sequence the given loop in the given antibody.
 #' If there are more than one copies of the loop present, the sequence of the
 #' earliest one in the PDB will be returned.
@@ -8,20 +8,20 @@
 #' @param loop The name of a loop (one of 'H1'...'L3')
 #'
 #' @return The sequence of the given loop in the antibody as a string
-#' 
+#'
 #' @examples
-#' antibody <- ReadAntibody(pdb = "data/7uja_chothia.pdb", 
+#' antibody <- ReadAntibody(pdb = "data/7uja_chothia.pdb",
 #'                          numbering = "Chothia",
 #'                          heavy = c("B", "E", "G", "I", "L", "N"),
 #'                          light = c("D", "F", "H", "J", "M", "O"),
 #'                          antigen = c("A", "K", "C"))
-#' 
+#'
 #' # Get the sequence of the H1 loop in antibody in the first chain that appears
 #' # in the PDB (in this case, "B")
 #' getLoopSequence(antibody = antibody, loop = 'H1')
-#' 
+#'
 #' @export
-getLoopSequence <- function(antibody, loop) {
+GetLoopSequence <- function(antibody, loop) {
   if (!(class(antibody) == 'antibody')) {
     stop(
       "antibody argument should be passed an object of class antibody from
@@ -36,14 +36,14 @@ getLoopSequence <- function(antibody, loop) {
   }
   
   # Get the loop
-  selected_loop <- antibody$loops[[loop]]
+  selectedLoop <- antibody$loops[[loop]]
   
   # Select the first chain present in the PDB that contains this loop
-  first_chain = selected_loop$atom$chain[1]
+  firstChain <- selectedLoop$atom$chain[1]
   
   # Get the sequence of the loop in the first chain
-  threeLetterCodes <- selected_loop$atom$resid[selected_loop$atom$elety == 'CA' &
-                                                 selected_loop$atom$chain == first_chain]
+  threeLetterCodes <- selectedLoop$atom$resid[selectedLoop$atom$elety == 'CA' &
+                                                selectedLoop$atom$chain == firstChain]
   oneLetterCodes <- .CODE_THREE_TO_ONE[threeLetterCodes]
   seq <- paste(oneLetterCodes, collapse = "")
   
@@ -51,36 +51,36 @@ getLoopSequence <- function(antibody, loop) {
 }
 
 #' Set the color of a component in an antibody
-#' 
+#'
 #' Set the color of a component in the antibody (component may be one of H1..L3,
-#' heavy (for the entire heavy chain), light (for the entire light chain), 
+#' heavy (for the entire heavy chain), light (for the entire light chain),
 #' antigen, or other)
-#' 
+#'
 #' @param antibody A list of class 'antibody'
-#' @param component The name of a component of an antibody (one of 'H1'...'L3', 
+#' @param component The name of a component of an antibody (one of 'H1'...'L3',
 #'                  'heavy', 'light', 'antigen', or 'other)
 #' @param color A color to set the component to for visualization
-#' 
+#'
 #' @return The antibody with the color of the given component set to color
-#' 
+#'
 #' @examples
 #' # Read in an antibody and make a copy with the 'other' component set to a
 #' # different color
-#' antibody <- ReadAntibody(pdb = "data/7uja_chothia.pdb", 
+#' antibody <- ReadAntibody(pdb = "data/7uja_chothia.pdb",
 #'                          numbering = "Chothia",
 #'                          heavy = c("B", "E", "G", "I", "L", "N"),
 #'                          light = c("D", "F", "H", "J", "M", "O"),
-#'                          antigen = c("A", "K", "C")) 
-#' updatedAntibody <- setComponentColor(antibody, 'other', '#42f5dd')
-#' 
+#'                          antigen = c("A", "K", "C"))
+#' updatedAntibody <- SetComponentColor(antibody, 'other', '#42f5dd')
+#'
 #' # See the antibody with the original color palette
 #' VisualizeAntibody(antibody)
-#' 
+#'
 #' # See the antibody with 'other' changed to '#42f5dd'
 #' VisualizeAntibody(updatedAntibody)
 #'
 #' @export
-setComponentColor <- function(antibody, component, color) {
+SetComponentColor <- function(antibody, component, color) {
   if (!(component %in% .ALL_LOOPS ||
         component %in% c('other', 'antigen', 'heavy', 'light'))) {
     stop(
@@ -96,30 +96,27 @@ setComponentColor <- function(antibody, component, color) {
   return(antibody)
 }
 
-#' Determines validity of a color
-#'
-#' Determines whether the given color is valid in R
-#' 
-#' @param color a color input by the user which must be checked for validity
-#' 
-#' @return TRUE iff the color is valid in R. FALSE otherwise.
-#'
-#' @examples
-#' Example 1:
-#' IsValidColor('red') # This should return TRUE
-#' 
-#' Example 2:
-#' IsValidColor('not a color') # This should return FALSE
-#' 
-IsValidColor <- function(color){
+# Determine validity of a color
+#
+# Determines whether the given color is valid in R
+#
+# @param color a color input by the user which must be checked for validity
+#
+# @return TRUE iff the color is valid in R. FALSE otherwise.
+#
+# @examples
+# Example 1:
+# IsValidColor('red') # This should return TRUE
+#
+# Example 2:
+# IsValidColor('not a color') # This should return FALSE
+IsValidColor <- function(color) {
   tryCatch({
     col2rgb(color)
     return(TRUE)
-  }, error = function(e){
+  }, error = function(e) {
     return(FALSE)
   })
 }
-
-
 
 # [END]

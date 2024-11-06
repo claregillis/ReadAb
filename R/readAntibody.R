@@ -1,4 +1,4 @@
-#' Reads in an antibody from a PDB
+#' Read in an antibody from a PDB
 #'
 #' A function that reads in an antibody or antibody-antigen complex from a PDB,
 #' given the path and re-numbeirng scheme (Kabat, Chothia, IMGT, Martin, AHo,
@@ -34,13 +34,13 @@
 #'
 #' @examples
 #' Examples:
-#' chothia_antibody <- ReadAntibody(pdb = "data/7uja_chothia.pdb",
+#' chothiaAntibody <- ReadAntibody(pdb = "data/7uja_chothia.pdb",
 #'                                  numbering = "Chothia",
 #'                                  heavy = c("B", "E", "G", "I", "L", "N"),
 #'                                  light = c("D", "F", "H", "J", "M", "O"),
 #'                                  antigen = c("A", "K", "C"))
 #'
-#' imgt_antibody <- ReadAntibody(pdb = "data/7ru4_imgt.pdb",
+#' imgtAntibody <- ReadAntibody(pdb = "data/7ru4_imgt.pdb",
 #'                               numbering = "IMGT",
 #'                               heavy = "H",
 #'                               light = "L",
@@ -70,16 +70,15 @@ ReadAntibody <- function(pdbPath,
     numbering == "AHo" ||
     numbering == "IMGT" ||
     numbering == "Honneger" ||
-    numbering == "Martin" ||
     numbering == "Kabat"
   )) {
     stop(
       "numbering argument should be provided a string indicating the
          renumbering scheme type. Must be one of
-         ['Kabat', 'Chothia', 'IMGT', 'Martin', 'AHo', 'Honneger']"
+         ['Kabat', 'Chothia', 'IMGT', 'AHo', 'Honneger']"
     )
   }
-  loop_ranges <- GetNumberingRange(numbering)
+  loopRanges <- GetNumberingRange(numbering)
   
   # Read the PDB
   pdb <- read.pdb(pdbPath)
@@ -90,8 +89,8 @@ ReadAntibody <- function(pdbPath,
   if (!(all(sapply(heavy, IsValidChain, realChains = chains)) &&
         all(sapply(light, IsValidChain, realChains = chains)) &&
         (all(
-          sapply(antigen, function(one_antigen)
-            IsValidChain(one_antigen, realChains = chains))
+          sapply(antigen, function(oneAntigen)
+            IsValidChain(oneAntigen, realChains = chains))
         )) ||
         is.null(antigen))) {
     stop(
@@ -114,7 +113,7 @@ ReadAntibody <- function(pdbPath,
     GetLoopAtoms,
     pdb = pdb,
     chainTypes = chainTypes,
-    ranges = loop_ranges
+    ranges = loopRanges
   )
   names(loops$atoms) <- loops$loop
   
@@ -128,30 +127,30 @@ ReadAntibody <- function(pdbPath,
     pdb = pdb,
     loops = loops$atoms,
     colors = colors,
-    antigen_chains = antigen
+    antigenChains = antigen
   )
   class(antibody) <- "antibody"
   return(antibody)
 }
 
-#' **All following functions are helpers and not exported**
-#'
-#' Determine whether a chain identifier is valid (a character identifier that
-#' is present in the list of real chain identifiers)
-#'
-#' Chain identifiers in PDB files must be a single character
-#'
-#' @param chainIdentifier a chain identifier object passed by the user
-#' @param realChains the list of chains present in the PDB file passed by the user
-#'
-#' @return True iff the chainIdentifier is a single character present in
-#' realChains
-#'
-#' @examples
-#' isValidChain('B', c('A', 'B', 'C'))
-#'
-#' isValidChain('D', c('A', 'B', 'C'))
-
+# **All following functions are helpers and not exported**
+# Determine if a chain ID is valid
+#
+# Determine whether a chain identifier is valid (a character identifier that
+# is present in the list of real chain identifiers)
+#
+# Chain identifiers in PDB files must be a single character
+#
+# @param chainIdentifier a chain identifier object passed by the user
+# @param realChains the list of chains present in the PDB file passed by the user
+#
+# @return True iff the chainIdentifier is a single character present in
+# realChains
+#
+# @examples
+# isValidChain('B', c('A', 'B', 'C'))
+#
+# isValidChain('D', c('A', 'B', 'C'))
 IsValidChain <- function(chainIdentifier, realChains) {
   # The chain identifier must be a character identifier that is present in the
   # list of real chain identifiers
@@ -163,21 +162,21 @@ IsValidChain <- function(chainIdentifier, realChains) {
   return(FALSE)
 }
 
-#' Get the index ranges for all CDRs for the specified numbering scheme
-#' Note: AHo and Honneger schemes are equivalent
-#'
-#' @param scheme valid numbering scheme (one of 'Chothia', 'AHo', 'Honneger', 'Kabat'
-#' 'Martin', or 'IMGT')
-#'
-#' @return A list of residue index ranges for each CDR according to the numbering
-#' scheme. Formatted as such (s & e denote start and end):
-#'    list(L1 = c(L1_s, L1_e), L2 = c(L2_s, L2_e), L3 = c(L3_s, L3_e),
-#'    H1 = c(H1_s, H1_e), H2 = c(H2, H2_e), H3 = c(H3_s, H3_e))
-#'
-#' @examples
-#' GetNumberingRange('Chothia')
-#'
-
+# Get the loop ranges for the numbering scheme
+#
+# Get the index ranges for all CDRs for the specified numbering scheme
+# Note: AHo and Honneger schemes are equivalent
+#
+# @param scheme valid numbering scheme (one of 'Chothia', 'AHo', 'Honneger', 'Kabat',
+# or 'IMGT')
+#
+# @return A list of residue index ranges for each CDR according to the numbering
+# scheme. Formatted as such (s & e denote start and end):
+#    list(L1 = c(L1_s, L1_e), L2 = c(L2_s, L2_e), L3 = c(L3_s, L3_e),
+#    H1 = c(H1_s, H1_e), H2 = c(H2_s, H2_e), H3 = c(H3_s, H3_e))
+#
+# @examples
+# GetNumberingRange('Chothia')
 GetNumberingRange <- function(scheme) {
   # Get the loop ranges corresponding to the numbering scheme
   if (scheme == "Chothia") {
@@ -189,9 +188,6 @@ GetNumberingRange <- function(scheme) {
   else if (scheme == "Kabat") {
     numberingRanges <- .KABAT_RANGES
   }
-  else if (scheme == "Martin") {
-    numberingRanges <- .MARTIN_RANGES
-  }
   else if (scheme == "IMGT") {
     numberingRanges <- .IMGT_RANGES
   }
@@ -199,6 +195,8 @@ GetNumberingRange <- function(scheme) {
   return(numberingRanges)
 }
 
+#' Get atoms in a loop
+#'
 #' Select the atoms in the loops named loopName from the pdb. The types of each
 #' chain (i.e. H (heavy) vs L (light)) are denoted in chainTypes, and the
 #' residue index ranges for each CDR according to the selected numbering scheme
@@ -222,7 +220,7 @@ GetNumberingRange <- function(scheme) {
 #' ranges <- GetNumberingRange('Chothia')
 #'
 #' # Get the atoms in H1 loops in the pdb
-#' H1_atoms <- GetLoopAtoms('H1', pdb, chainTypes, ranges)
+#' H1Atoms <- GetLoopAtoms('H1', pdb, chainTypes, ranges)
 #'
 #' @importFrom bio3d atom.select
 #' @importFrom bio3d trim.pdb

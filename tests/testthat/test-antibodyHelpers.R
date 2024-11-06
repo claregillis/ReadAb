@@ -17,26 +17,26 @@ class(mock_antibody) <- "antibody"
 
 # Tests for getLoopSequence function
 test_that("getLoopSequence returns correct sequence", {
-  result <- getLoopSequence(mock_antibody, "H1")
+  result <- GetLoopSequence(mock_antibody, "H1")
   expect_equal(result, "AG")  # Expected sequence from the mock data
   
   # Test for invalid antibody object
-  expect_error(getLoopSequence(list(), "H1"), "antibody argument should be passed an object of class antibody")
+  expect_error(GetLoopSequence(list(), "H1"), "antibody argument should be passed an object of class antibody")
   
   # Test for invalid loop name
-  expect_error(getLoopSequence(mock_antibody, "H4"), "loop argument should be passed the name of an antibody loop")
+  expect_error(GetLoopSequence(mock_antibody, "H4"), "loop argument should be passed the name of an antibody loop")
 })
 
 # Tests for setComponentColor function
 test_that("setComponentColor sets color correctly", {
-  updated_antibody <- setComponentColor(mock_antibody, "H1", "#00FF00")
+  updated_antibody <- SetComponentColor(mock_antibody, "H1", "#00FF00")
   expect_equal(updated_antibody$colors$H1, "#00FF00")  # Check if color was updated
   
   # Test for invalid component name
-  expect_error(setComponentColor(mock_antibody, "InvalidComponent", "#00FF00"), "component argument should be passed the name of the component")
+  expect_error(SetComponentColor(mock_antibody, "InvalidComponent", "#00FF00"), "component argument should be passed the name of the component")
   
   # Test for invalid color
-  expect_error(setComponentColor(mock_antibody, "H1", "notacolor"), "color argument should be passed a valid color")
+  expect_error(SetComponentColor(mock_antibody, "H1", "notacolor"), "color argument should be passed a valid color")
 })
 
 # Tests for IsValidColor function

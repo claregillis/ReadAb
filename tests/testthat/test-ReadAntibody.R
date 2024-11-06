@@ -47,7 +47,7 @@ test_that("ReadAntibody throws error with invalid numbering scheme", {
     pdbPath = system.file("data/7uja_chothia.pdb", package = "ReadAb"),
     numbering = "InvalidScheme"
   ),
-  regexp = "numbering argument should be provided a string indicating the\\s+renumbering scheme type\\.\\s+Must be one of\\s+\\['Kabat', 'Chothia', 'IMGT', 'Martin', 'AHo', 'Honneger'\\]")
+  regexp = "numbering argument should be provided a string indicating the\\s+renumbering scheme type\\.\\s+Must be one of\\s+\\['Kabat', 'Chothia', 'IMGT', 'AHo', 'Honneger'\\]")
   fixed = FALSE
 })
 

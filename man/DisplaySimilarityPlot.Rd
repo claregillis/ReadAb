@@ -2,12 +2,12 @@
 % Please edit documentation in R/visualize.R
 \name{DisplaySimilarityPlot}
 \alias{DisplaySimilarityPlot}
-\title{Display a heatmap of a matrix denoting the similarity between antibody loops}
+\title{Display heatmap of loop similarity matrix}
 \usage{
-DisplaySimilarityPlot(similarity_matrix, loop)
+DisplaySimilarityPlot(similarityMatrix, loop)
 }
 \arguments{
-\item{similarity_matrix}{A similarity matrix produced by
+\item{similarityMatrix}{A similarity matrix produced by
 \code{assessLoopSimilarity} or \code{assessOverallLoopSimilarity}}
 
 \item{loop}{The name of the loop being compared (should be one of 'H1', 'H2',
@@ -18,7 +18,7 @@ Display a heatmap of a matrix denoting the similarity between antibody loops
 }
 \examples{
 # Read in 3 antibodies
-antibody1 <- ReadAntibody(pdb = "data/7x94_imgt.pdb", 
+antibody1 <- ReadAntibody(pdb = "data/7x94_imgt.pdb",
                           numbering = "IMGT",
                           heavy = "H",
                           light = "L",
@@ -35,20 +35,20 @@ antibody3 <- ReadAntibody(pdb = "data/8sau_chothia.pdb",
                           heavy = c("C", "H", "M"),
                           light = c("D", "I", "N"),
                           antigen = c("A", "F", "K"))
-                          
+
 # Example 1:
 # Compare the H3 loops of the antibodies and display the plot
-H3Sim <- assessLoopSimilarity(list(Antibody1 = antibody1, 
+H3Sim <- assessLoopSimilarity(list(Antibody1 = antibody1,
                                    Antibody2 = antibody2,
-                                   Antibody3 = antibody3), 
+                                   Antibody3 = antibody3),
                               'H3')
 
 DisplaySimilarityPlot(H3Sim, 'H3')
 
 # Example 2:
-# Compare the loops of antibody1 and antibody2, weighting H3 higher than 
+# Compare the loops of antibody1 and antibody2, weighting H3 higher than
 # other loops
-overallSim <- assessOverallLoopSimilarity(list(Antibody1 = antibody1, 
+overallSim <- assessOverallLoopSimilarity(list(Antibody1 = antibody1,
                                                Antibody2 = antibody2,
                                                Antibody3 = antibody3),
                                           wH1 = 0.1,
@@ -58,6 +58,6 @@ overallSim <- assessOverallLoopSimilarity(list(Antibody1 = antibody1,
                                           wL2 = 0.1,
                                           wL3 = 0.1)
 
-DisplaySimilarityPlot(overallSim, 'all')  
+DisplaySimilarityPlot(overallSim, 'all')
 
 }

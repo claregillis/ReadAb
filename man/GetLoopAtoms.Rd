@@ -2,10 +2,7 @@
 % Please edit documentation in R/readAntibody.R
 \name{GetLoopAtoms}
 \alias{GetLoopAtoms}
-\title{Select the atoms in the loops named loopName from the pdb. The types of each
-chain (i.e. H (heavy) vs L (light)) are denoted in chainTypes, and the
-residue index ranges for each CDR according to the selected numbering scheme
-are stored in ranges.}
+\title{Get atoms in a loop}
 \usage{
 GetLoopAtoms(loopName, pdb, chainTypes, ranges)
 }
@@ -38,6 +35,6 @@ chainTypes <- data.frame(H = c('B', 'E'), L = c('A', 'D'))
 ranges <- GetNumberingRange('Chothia')
 
 # Get the atoms in H1 loops in the pdb
-H1_atoms <- GetLoopAtoms('H1', pdb, chainTypes, ranges)
+H1Atoms <- GetLoopAtoms('H1', pdb, chainTypes, ranges)
 
 }
