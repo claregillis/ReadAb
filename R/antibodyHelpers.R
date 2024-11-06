@@ -89,28 +89,30 @@ SetComponentColor <- function(antibody, component, color) {
          'antigen', or 'other'"
     )
   }
-  if (!(IsValidColor(color))) {
+  if (!(.IsValidColor(color))) {
     stop("color argument should be passed a valid color")
   }
   antibody$colors[[component]] <- color
   return(antibody)
 }
 
-# Determine validity of a color
-#
-# Determines whether the given color is valid in R
-#
-# @param color a color input by the user which must be checked for validity
-#
-# @return TRUE iff the color is valid in R. FALSE otherwise.
-#
-# @examples
-# Example 1:
-# IsValidColor('red') # This should return TRUE
-#
-# Example 2:
-# IsValidColor('not a color') # This should return FALSE
-IsValidColor <- function(color) {
+#' Determine validity of a color
+#'
+#' Determines whether the given color is valid in R. Internal package.
+#'
+#' @param color a color input by the user which must be checked for validity
+#'
+#' @return TRUE iff the color is valid in R. FALSE otherwise.
+#'
+#' @examples
+#' Example 1:
+#' .IsValidColor('red') # This should return TRUE
+#'
+#' Example 2:
+#' .IsValidColor('not a color') # This should return FALSE
+#' 
+#' @export
+.IsValidColor <- function(color) {
   tryCatch({
     col2rgb(color)
     return(TRUE)

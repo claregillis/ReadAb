@@ -78,7 +78,7 @@ ReadAntibody <- function(pdbPath,
          ['Kabat', 'Chothia', 'IMGT', 'AHo', 'Honneger']"
     )
   }
-  loopRanges <- GetNumberingRange(numbering)
+  loopRanges <- .GetNumberingRange(numbering)
   
   # Read the PDB
   pdb <- read.pdb(pdbPath)
@@ -86,11 +86,11 @@ ReadAntibody <- function(pdbPath,
   
   # Ensure the chain identifiers (heavy1&2, light1&2, antigen) are valid
   # note the antigen may or may not be present, so may be NULL
-  if (!(all(sapply(heavy, IsValidChain, realChains = chains)) &&
-        all(sapply(light, IsValidChain, realChains = chains)) &&
+  if (!(all(sapply(heavy, .IsValidChain, realChains = chains)) &&
+        all(sapply(light, .IsValidChain, realChains = chains)) &&
         (all(
           sapply(antigen, function(oneAntigen)
-            IsValidChain(oneAntigen, realChains = chains))
+            .IsValidChain(oneAntigen, realChains = chains))
         )) ||
         is.null(antigen))) {
     stop(
@@ -110,7 +110,7 @@ ReadAntibody <- function(pdbPath,
   loops <- list(loop = c('H1', 'H2', 'H3', 'L1', 'L2', 'L3'))
   loops$atoms <- lapply(
     loops$loop,
-    GetLoopAtoms,
+    .GetLoopAtoms,
     pdb = pdb,
     chainTypes = chainTypes,
     ranges = loopRanges
@@ -133,25 +133,27 @@ ReadAntibody <- function(pdbPath,
   return(antibody)
 }
 
-# **All following functions are helpers and not exported**
-# Determine if a chain ID is valid
-#
-# Determine whether a chain identifier is valid (a character identifier that
-# is present in the list of real chain identifiers)
-#
-# Chain identifiers in PDB files must be a single character
-#
-# @param chainIdentifier a chain identifier object passed by the user
-# @param realChains the list of chains present in the PDB file passed by the user
-#
-# @return True iff the chainIdentifier is a single character present in
-# realChains
-#
-# @examples
-# isValidChain('B', c('A', 'B', 'C'))
-#
-# isValidChain('D', c('A', 'B', 'C'))
-IsValidChain <- function(chainIdentifier, realChains) {
+#' **All following functions are helpers**
+#' Determine if a chain ID is valid
+#'
+#' Determine whether a chain identifier is valid (a character identifier that
+#' is present in the list of real chain identifiers)
+#'
+#' Chain identifiers in PDB files must be a single character
+#'
+#' @param chainIdentifier a chain identifier object passed by the user
+#' @param realChains the list of chains present in the PDB file passed by the user
+#'
+#' @return True iff the chainIdentifier is a single character present in
+#' realChains
+#'
+#' @examples
+#' .isValidChain('B', c('A', 'B', 'C'))
+#'
+#' .isValidChain('D', c('A', 'B', 'C'))
+#' 
+#' @export
+.IsValidChain <- function(chainIdentifier, realChains) {
   # The chain identifier must be a character identifier that is present in the
   # list of real chain identifiers
   if (is.character(chainIdentifier) &&
@@ -162,22 +164,24 @@ IsValidChain <- function(chainIdentifier, realChains) {
   return(FALSE)
 }
 
-# Get the loop ranges for the numbering scheme
-#
-# Get the index ranges for all CDRs for the specified numbering scheme
-# Note: AHo and Honneger schemes are equivalent
-#
-# @param scheme valid numbering scheme (one of 'Chothia', 'AHo', 'Honneger', 'Kabat',
-# or 'IMGT')
-#
-# @return A list of residue index ranges for each CDR according to the numbering
-# scheme. Formatted as such (s & e denote start and end):
-#    list(L1 = c(L1_s, L1_e), L2 = c(L2_s, L2_e), L3 = c(L3_s, L3_e),
-#    H1 = c(H1_s, H1_e), H2 = c(H2_s, H2_e), H3 = c(H3_s, H3_e))
-#
-# @examples
-# GetNumberingRange('Chothia')
-GetNumberingRange <- function(scheme) {
+#' Get the loop ranges for the numebering scheme
+#'
+#' Get the index ranges for all CDRs for the specified numbering scheme
+#' Note: AHo and Honneger schemes are equivalent
+#'
+#' @param scheme valid numbering scheme (one of 'Chothia', 'AHo', 'Honneger', 'Kabat',
+#' or 'IMGT')
+#'
+#' @return A list of residue index ranges for each CDR according to the numbering
+#' scheme. Formatted as such (s & e denote start and end):
+#'    list(L1 = c(L1_s, L1_e), L2 = c(L2_s, L2_e), L3 = c(L3_s, L3_e),
+#'    H1 = c(H1_s, H1_e), H2 = c(H2, H2_e), H3 = c(H3_s, H3_e))
+#'
+#' @examples
+#' .GetNumberingRange('Chothia')
+#' 
+#' @export
+.GetNumberingRange <- function(scheme) {
   # Get the loop ranges corresponding to the numbering scheme
   if (scheme == "Chothia") {
     numberingRanges <- .CHOTHIA_RANGES
@@ -220,12 +224,13 @@ GetNumberingRange <- function(scheme) {
 #' ranges <- GetNumberingRange('Chothia')
 #'
 #' # Get the atoms in H1 loops in the pdb
-#' H1Atoms <- GetLoopAtoms('H1', pdb, chainTypes, ranges)
+#' H1Atoms <- .GetLoopAtoms('H1', pdb, chainTypes, ranges)
 #'
 #' @importFrom bio3d atom.select
 #' @importFrom bio3d trim.pdb
-
-GetLoopAtoms <- function(loopName, pdb, chainTypes, ranges) {
+#' 
+#' @export
+.GetLoopAtoms <- function(loopName, pdb, chainTypes, ranges) {
   chainType <- substr(loopName, 1, 1)
   sameTypeChains <- chainTypes[[chainType]]
   
