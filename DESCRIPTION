@@ -6,14 +6,14 @@ Authors@R: c(
     )
 Maintainer: Clare Gillis <clare.gillis@mail.utoronto.ca>
 Description: ReadAb is a package used to work with antibodies stored in PDB files.
-        It facilitates the reading of antibodies from PDB files renumbered with 
-        any of the Kabat, Chothia, IMGT, or AHo/Honegger schemes to denote 
-        the locations of complimentarity determining regions (CDRs) (A.K.A. binding
-        loops.) Enables researchers to compare binding specificity between multiple
-        antibodies by comparing aligned loop sequences. ReadAb offers tools for 
-        visualizing antibodies with color coded components (loops, antigen, other),
-        and for visualizing loop similarity matrices using heatmaps.
-License: `use_mit_license()`
+    It facilitates the reading of antibodies from PDB files renumbered with 
+    any of the Kabat, Chothia, IMGT, or AHo/Honegger schemes to denote 
+    the locations of complementarity determining regions (CDRs) (a.k.a. binding
+    loops). Enables researchers to compare binding specificity between multiple
+    antibodies by comparing aligned loop sequences. ReadAb offers tools for 
+    visualizing antibodies with color-coded components (loops, antigen, others),
+    and for visualizing loop similarity matrices using heatmaps.
+License: MIT
 Encoding: UTF-8
 Imports: 
     dplyr,
