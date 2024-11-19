@@ -14,10 +14,10 @@
 
 # Tests for ReadAntibody
 test_that("ReadAntibody handles valid inputs correctly", {
-  pdbPath <- system.file("inst/extdata/7uja_chothia.pdb", package = "ReadAb")
+  pdbPath <- system.file("extdata", "7uja_chothia.pdb", package = "ReadAb")
   
   # Mock a PDB object with bio3d
-  mock_pdb <- read.pdb(system.file("inst/extdata/7uja_chothia.pdb", package = "ReadAb"))
+  mock_pdb <- read.pdb(system.file("extdata", "7uja_chothia.pdb", package = "ReadAb"))
   
   # Assuming you have set up mocks for constants file
   result <- ReadAntibody(
@@ -44,7 +44,7 @@ test_that("ReadAntibody throws error with invalid pdbPath", {
 
 test_that("ReadAntibody throws error with invalid numbering scheme", {
   expect_error(ReadAntibody(
-    pdbPath = system.file("inst/extdata/7uja_chothia.pdb", package = "ReadAb"),
+    pdbPath = system.file("extdata", "7uja_chothia.pdb", package = "ReadAb"),
     numbering = "InvalidScheme"
   ),
   regexp = "numbering argument should be provided a string indicating the\\s+renumbering scheme type\\.\\s+Must be one of\\s+\\['Kabat', 'Chothia', 'IMGT', 'AHo', 'Honneger'\\]")
@@ -52,7 +52,7 @@ test_that("ReadAntibody throws error with invalid numbering scheme", {
 })
 
 test_that("ReadAntibody correctly identifies valid and invalid chains", {
-  pdb <- read.pdb(system.file("inst/extdata/7uja_chothia.pdb", package = "ReadAb"))
+  pdb <- read.pdb(system.file("extdata", "7uja_chothia.pdb", package = "ReadAb"))
   realChains <- unique(pdb$atom$chain)
   
   expect_true(.IsValidChain("A", realChains))

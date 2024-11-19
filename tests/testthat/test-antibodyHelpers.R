@@ -41,9 +41,9 @@ test_that("setComponentColor sets color correctly", {
 
 # Tests for IsValidColor function
 test_that("IsValidColor validates colors correctly", {
-  expect_true(IsValidColor("red"))       # Valid color
-  expect_true(IsValidColor("#FF0000"))   # Valid hex color
-  expect_false(IsValidColor("notacolor"))  # Invalid color
+  expect_true(.IsValidColor("red"))       # Valid color
+  expect_true(.IsValidColor("#FF0000"))   # Valid hex color
+  expect_false(.IsValidColor("notacolor"))  # Invalid color
 })
 
 # [END]

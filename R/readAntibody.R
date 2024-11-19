@@ -65,8 +65,8 @@ ReadAntibody <- function(pdbPath,
   }
   
   # Ensure the renumbering scheme is valid
-  if (!(is.character(x) &&
-        length(x) == 1 && numbering %in% SCHEMES)) {
+  if (!(is.character(numbering) &&
+        length(numbering) == 1 && numbering %in% SCHEMES)) {
     stop(
       "numbering argument should be provided a string indicating the
          renumbering scheme type. Must be one of
