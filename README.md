@@ -3,17 +3,7 @@
 
 # ReadAb
 
-A package used to read in antibodies from PDBs numbered with a variety
-of schemes (Kabat, Chothia, IMGT, AHo), identify the
-complimentarity-determining loops (CDR loops), display antibody
-structures, and comparatively analyse loops of many antibodies.
-
-The package uses a small subset of the SabDab human dataset
-(<https://opig.stats.ox.ac.uk/webapps/sabdab-sabpred/sabdab>) which
-contains a variety of antibody-antigen-complex structures.
-
-This package was built as an R package, and was developed as a part of a
-course project for \[BCB410H1: Applied Bioinformatics\]
+A package used to read in and work with antibodies from PDBs.
 
 ## Description
 
@@ -28,6 +18,19 @@ components (loops, antigen, other), and for visualizing loop similarity
 matrices using heatmaps. `ReadAb` was developed using
 `R version 4.4.1 (2024-06-14)`, `Platform: aarch64-apple-darwin20`, and
 `Running under: macOS Sonoma 14.2.1`.
+
+The package uses a small subset of the SabDab human dataset
+(<https://opig.stats.ox.ac.uk/webapps/sabdab-sabpred/sabdab>) which
+contains a variety of antibody-antigen-complex structures.
+
+This package was built as an R package, and was developed as a part of a
+course project for \[BCB410H1: Applied Bioinformatics\]
+
+More information on antibody structures available
+[here](https://pmc.ncbi.nlm.nih.gov/articles/PMC8163984/#sec1)
+
+For information on antibody numbering schemes, see [this
+article](https://www.frontiersin.org/journals/immunology/articles/10.3389/fimmu.2018.02278/full)
 
 ## Installation
 
@@ -49,23 +52,29 @@ devtools::install_github("claregillis/ReadAb", build_vignettes = FALSE)
 
 ## Overview
 
+``` r
+ls("package:ReadAb")
+data(package = "ReadAb") 
+browseVignettes("ReadAb")
+```
+
 `ReadAb` contains 8 functions.
 
 1.  ***ReadAntibody*** for reading a PDB file containing an antibody
     using a selected numbering scheme to identify CDR loops
 
-2.  ***getLoopSequence*** to get the sequence of a loop in an antibody
+2.  ***GetLoopSequence*** to get the sequence of a loop in an antibody
 
-3.  ***setComponentColor*** to set the color of a component in an
+3.  ***SetComponentColor*** to set the color of a component in an
     antibody (specific loop, antigen, other) for future visualization
 
-4.  ***alignLoop*** to align a given loop for multiple antibodies (ex.
+4.  ***AlignLoop*** to align a given loop for multiple antibodies (ex.
     H3 loop of 3 antibodies)
 
-5.  ***assessLoopSimilarity*** for determining the similarity between
+5.  ***AssessLoopSimilarity*** for determining the similarity between
     the given loop for each pair of antibodies provided
 
-6.  ***assessOverallLoopSimilarity*** for determining the similarity of
+6.  ***AssessOverallLoopSimilarity*** for determining the similarity of
     ALL loops (loops may be weighted) for each pair of antibodies
     provided
 
@@ -155,6 +164,10 @@ on ChatGPT is available [here](https://openai.com/index/chatgpt/)
   Biostrings: Efficient manipulation of biological strings (R package
   version 2.72.1). <https://doi.org/10.18129/B9.bioc.Biostrings>
 
+- R Core Team (2023). R: A language and environment for statistical
+  computing. R Foundation for Statistical Computing, Vienna, Austria.
+  <https://www.R-project.org/>
+
 - Sievert, C. (2020). Interactive Web-Based Data Visualization with R,
   plotly, and shiny. Chapman and Hall/CRC Florida.
 
@@ -165,8 +178,12 @@ on ChatGPT is available [here](https://openai.com/index/chatgpt/)
   Grammar of Data Manipulation*. R package version 1.1.4.
   <https://CRAN.R-project.org/package=dplyr>
 
+- Wilson, I. A., & Stanfield, R. L. (2021). 50 years of structural
+  immunology. *Journal of Biological Chemistry*, 296, Article 100745.
+  <https://doi.org/10.1016/j.jbc.2021.100745>
+
 - Wright, E. S. (2016). “Using DECIPHER v2.0 to Analyze Big Biological
-  Sequence Data in R.” *The R Journal*, *8*(1), 352-359.
+  Sequence Data in R.” *The R Journal*, 8(1), 352-359.
 
 ## Acknowledgements
 
