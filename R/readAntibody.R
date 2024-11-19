@@ -34,13 +34,15 @@
 #'
 #' @examples
 #' Examples:
-#' chothiaAntibody <- ReadAntibody(pdb = "inst/extdata/7uja_chothia.pdb",
+#' chothiaPath <- system.file("extdata", "7uja_chothia.pdb", package = "ReadAb")
+#' chothiaAntibody <- ReadAntibody(pdb = chothiaPath,
 #'                                  numbering = "Chothia",
 #'                                  heavy = c("B", "E", "G", "I", "L", "N"),
 #'                                  light = c("D", "F", "H", "J", "M", "O"),
 #'                                  antigen = c("A", "K", "C"))
-#'
-#' imgtAntibody <- ReadAntibody(pdb = "inst/extdata/7ru4_imgt.pdb",
+#' 
+#' imgtPath <- system.file("extdata", "7ru4_imgt.pdb", package = "ReadAb")
+#' imgtAntibody <- ReadAntibody(pdb = imgtPath,
 #'                               numbering = "IMGT",
 #'                               heavy = "H",
 #'                               light = "L",
@@ -212,7 +214,8 @@ ReadAntibody <- function(pdbPath,
 #'
 #' @examples
 #' # Read in a PDB file and note the chain types in a data frame
-#' pdb <- read.pdb("inst/extdata/1ahw_chothia.pdb")
+#' pdb_path <- system.file("extdata", "1ahw_chothia.pdb", package = ReadAb)
+#' pdb <- read.pdb(pdbPath)
 #' chainTypes <- data.frame(H = c('B', 'E'), L = c('A', 'D'))
 #'
 #' # Get the CDR index ranges for the numbering scheme used in the PDB

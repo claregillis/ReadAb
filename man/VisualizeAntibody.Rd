@@ -21,7 +21,8 @@ all atoms of the antibody, "heavy" to show only heavy atoms (all atoms other
 than hydrogen), or "backbone" to omit sidechain and hydrogen atoms.
 }
 \examples{
-antibody <- ReadAntibody(pdb = "inst/extdata/7uja_chothia.pdb",
+pdbPath <- system.file("extdata", "7uja_chothia.pdb", package = "ReadAb")
+antibody <- ReadAntibody(pdb = pdbPath,
                          numbering = "Chothia",
                          heavy = c("B", "E", "G", "I", "L", "N"),
                          light = c("D", "F", "H", "J", "M", "O"),

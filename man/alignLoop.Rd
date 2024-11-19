@@ -21,13 +21,15 @@ returns an alignment of the sequences of this loop in the antibodies
 }
 \examples{
 # Read in two antibodies
-antibody1 <- ReadAntibody(pdb = "inst/extdata/7x94_imgt.pdb",
+path7x94 <- system.file("extdata", "7x94_imgt.pdb", package = ReadAb)
+antibody1 <- ReadAntibody(pdb = path7x94,
                           numbering = "IMGT",
                           heavy = "H",
                           light = "L",
                           antigen = "A")
 
-antibody2 <- ReadAntibody(pdb = "inst/extdata/7x96_imgt.pdb",
+path7x96 <- system.file("extdata", "7x96_imgt.pdb", package = ReadAb)
+antibody1 <- ReadAntibody(pdb = path7x96,
                           numbering = "IMGT",
                           heavy = "H",
                           light = "L",

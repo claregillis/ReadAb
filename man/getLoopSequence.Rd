@@ -20,7 +20,8 @@ If there are more than one copies of the loop present, the sequence of the
 earliest one in the PDB will be returned.
 }
 \examples{
-antibody <- ReadAntibody(pdb = "inst/extdata/7uja_chothia.pdb",
+pdbPath <- system.file("extdata", "7uja_chothia.pdb", package = "ReadAb")
+antibody <- ReadAntibody(pdb = pdbPath,
                          numbering = "Chothia",
                          heavy = c("B", "E", "G", "I", "L", "N"),
                          light = c("D", "F", "H", "J", "M", "O"),

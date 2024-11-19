@@ -22,13 +22,15 @@ between each antibody pair.
 }
 \examples{
 # Read in 2 antibodies
-antibody1 <- ReadAntibody(pdb = "inst/extdata/7x94_imgt.pdb",
+path7x94 <- system.file("extdata", "7x94_imgt.pdb", package = ReadAb)
+antibody1 <- ReadAntibody(pdb = path7x94,
                           numbering = "IMGT",
                           heavy = "H",
                           light = "L",
                           antigen = "A")
 
-antibody2 <- ReadAntibody(pdb = "inst/extdata/7x96_imgt.pdb",
+path7x96 <- system.file("extdata", "7x96_imgt.pdb", package = ReadAb)
+antibody1 <- ReadAntibody(pdb = path7x96,
                           numbering = "IMGT",
                           heavy = "H",
                           light = "L",
