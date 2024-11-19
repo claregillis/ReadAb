@@ -54,13 +54,13 @@ are supported
 }
 \examples{
 Examples:
-chothiaAntibody <- ReadAntibody(pdb = "data/7uja_chothia.pdb",
+chothiaAntibody <- ReadAntibody(pdb = "inst/extdata/7uja_chothia.pdb",
                                  numbering = "Chothia",
                                  heavy = c("B", "E", "G", "I", "L", "N"),
                                  light = c("D", "F", "H", "J", "M", "O"),
                                  antigen = c("A", "K", "C"))
 
-imgtAntibody <- ReadAntibody(pdb = "data/7ru4_imgt.pdb",
+imgtAntibody <- ReadAntibody(pdb = "inst/extdata/7ru4_imgt.pdb",
                               numbering = "IMGT",
                               heavy = "H",
                               light = "L",

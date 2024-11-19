@@ -34,13 +34,13 @@
 #'
 #' @examples
 #' Examples:
-#' chothiaAntibody <- ReadAntibody(pdb = "data/7uja_chothia.pdb",
+#' chothiaAntibody <- ReadAntibody(pdb = "inst/extdata/7uja_chothia.pdb",
 #'                                  numbering = "Chothia",
 #'                                  heavy = c("B", "E", "G", "I", "L", "N"),
 #'                                  light = c("D", "F", "H", "J", "M", "O"),
 #'                                  antigen = c("A", "K", "C"))
 #'
-#' imgtAntibody <- ReadAntibody(pdb = "data/7ru4_imgt.pdb",
+#' imgtAntibody <- ReadAntibody(pdb = "inst/extdata/7ru4_imgt.pdb",
 #'                               numbering = "IMGT",
 #'                               heavy = "H",
 #'                               light = "L",
@@ -65,13 +65,8 @@ ReadAntibody <- function(pdbPath,
   }
   
   # Ensure the renumbering scheme is valid
-  if (!(
-    numbering == "Chothia" ||
-    numbering == "AHo" ||
-    numbering == "IMGT" ||
-    numbering == "Honneger" ||
-    numbering == "Kabat"
-  )) {
+  if (!(is.character(x) &&
+        length(x) == 1 && numbering %in% SCHEMES)) {
     stop(
       "numbering argument should be provided a string indicating the
          renumbering scheme type. Must be one of
@@ -151,7 +146,7 @@ ReadAntibody <- function(pdbPath,
 #' .isValidChain('B', c('A', 'B', 'C'))
 #'
 #' .isValidChain('D', c('A', 'B', 'C'))
-#' 
+#'
 #' @export
 .IsValidChain <- function(chainIdentifier, realChains) {
   # The chain identifier must be a character identifier that is present in the
@@ -179,7 +174,7 @@ ReadAntibody <- function(pdbPath,
 #'
 #' @examples
 #' .GetNumberingRange('Chothia')
-#' 
+#'
 #' @export
 .GetNumberingRange <- function(scheme) {
   # Get the loop ranges corresponding to the numbering scheme
@@ -217,7 +212,7 @@ ReadAntibody <- function(pdbPath,
 #'
 #' @examples
 #' # Read in a PDB file and note the chain types in a data frame
-#' pdb <- read.pdb("data/1ahw_chothia.pdb")
+#' pdb <- read.pdb("inst/extdata/1ahw_chothia.pdb")
 #' chainTypes <- data.frame(H = c('B', 'E'), L = c('A', 'D'))
 #'
 #' # Get the CDR index ranges for the numbering scheme used in the PDB
@@ -228,7 +223,7 @@ ReadAntibody <- function(pdbPath,
 #'
 #' @importFrom bio3d atom.select
 #' @importFrom bio3d trim.pdb
-#' 
+#'
 #' @export
 .GetLoopAtoms <- function(loopName, pdb, chainTypes, ranges) {
   chainType <- substr(loopName, 1, 1)

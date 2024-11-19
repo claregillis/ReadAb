@@ -28,7 +28,7 @@ are stored in ranges.
 }
 \examples{
 # Read in a PDB file and note the chain types in a data frame
-pdb <- read.pdb("data/1ahw_chothia.pdb")
+pdb <- read.pdb("inst/extdata/1ahw_chothia.pdb")
 chainTypes <- data.frame(H = c('B', 'E'), L = c('A', 'D'))
 
 # Get the CDR index ranges for the numbering scheme used in the PDB

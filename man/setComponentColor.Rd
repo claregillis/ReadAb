@@ -25,7 +25,7 @@ antigen, or other)
 \examples{
 # Read in an antibody and make a copy with the 'other' component set to a
 # different color
-antibody <- ReadAntibody(pdb = "data/7uja_chothia.pdb",
+antibody <- ReadAntibody(pdb = "inst/extdata/7uja_chothia.pdb",
                          numbering = "Chothia",
                          heavy = c("B", "E", "G", "I", "L", "N"),
                          light = c("D", "F", "H", "J", "M", "O"),

@@ -14,7 +14,7 @@
 #' @return NULL
 #'
 #' @examples
-#' antibody <- ReadAntibody(pdb = "data/7uja_chothia.pdb",
+#' antibody <- ReadAntibody(pdb = "inst/extdata/7uja_chothia.pdb",
 #'                          numbering = "Chothia",
 #'                          heavy = c("B", "E", "G", "I", "L", "N"),
 #'                          light = c("D", "F", "H", "J", "M", "O"),
@@ -252,19 +252,19 @@ VisualizeAntibody <- function(antibody, mode = "all_atoms") {
 #'
 #' @examples
 #' # Read in 3 antibodies
-#' antibody1 <- ReadAntibody(pdb = "data/7x94_imgt.pdb",
+#' antibody1 <- ReadAntibody(pdb = "inst/extdata/7x94_imgt.pdb",
 #'                           numbering = "IMGT",
 #'                           heavy = "H",
 #'                           light = "L",
 #'                           antigen = "A")
 #'
-#' antibody2 <- ReadAntibody(pdb = "data/7x96_imgt.pdb",
+#' antibody2 <- ReadAntibody(pdb = "inst/extdata/7x96_imgt.pdb",
 #'                           numbering = "IMGT",
 #'                           heavy = "H",
 #'                           light = "L",
 #'                           antigen = "A")
 #'
-#' antibody3 <- ReadAntibody(pdb = "data/8sau_chothia.pdb",
+#' antibody3 <- ReadAntibody(pdb = "inst/extdata/8sau_chothia.pdb",
 #'                           numbering = "Chothia",
 #'                           heavy = c("C", "H", "M"),
 #'                           light = c("D", "I", "N"),

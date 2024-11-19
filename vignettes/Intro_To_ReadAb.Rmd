@@ -86,8 +86,7 @@ A list of class 'pdb' from bio3d holding all L3 atoms from the PDB.
 For example, to read the antibody PDB 7uja renumbered with the Chothia scheme 
 (provided in the dataset):
 ```{r}
-library(ReadAb)
-ab7x94 <- ReadAb::ReadAntibody(pdb = system.file("data/7x96_imgt.pdb", package = 'ReadAb'),
+ab7x94 <- ReadAb::ReadAntibody(pdb = system.file("inst/extdata/7x94_imgt.pdb", package = 'ReadAb'),
                           numbering = "IMGT",
                           heavy = "H",
                           light = "L",
@@ -114,7 +113,7 @@ multiple antibodies with the option of weighting loops differently.
 
 For example, to compare the H1 loops of the 1ahw and 7uja antibodies from the dataset:
 ```{r}
-ab7x96 <- ReadAb::ReadAntibody(pdb = system.file("data/7x96_imgt.pdb", package = "ReadAb"),
+ab7x96 <- ReadAb::ReadAntibody(pdb = system.file("inst/extdata/7x96_imgt.pdb", package = "ReadAb"),
                           numbering = "IMGT",
                           heavy = "H",
                           light = "L",
