@@ -88,7 +88,6 @@ For example, to read the antibody PDB 7uja renumbered with the Chothia scheme
 (provided in the dataset):
 ```{r}
 pdbPath <- system.file("extdata", "7x94_imgt.pdb", package = 'ReadAb')
-print(pdbPath)
 ab7x94 <- ReadAb::ReadAntibody(pdb = pdbPath,
                           numbering = "IMGT",
                           heavy = "H",
@@ -150,7 +149,7 @@ and 'backbone' to display all backbone atoms (i.e. omit sidechains.)
 
 For example, to display all atoms of the 7uja antibody:
 ```{r}
-ReadAb::VisualizeAntibody(ab7x94, mode = "all_atoms")
+ReadAb::VisualizeAntibody(antibody = ab7x94, mode = "all_atoms")
 ```
 
 To change the color of antibody component, use the `setComponentColor` function.
