@@ -101,7 +101,7 @@ AssessLoopSimilarity <- function(antibodies, loop) {
     )
   }
   
-  # Align the loops and get the distance then similarityb between them
+  # Align the loops and get the distance then similarity between them
   alignedLoops <- AlignLoop(antibodies, loop)
   distanceMatrix <- DECIPHER::DistanceMatrix(alignedLoops, verbose = FALSE)
   similarityMatrix <- 1 - distanceMatrix
