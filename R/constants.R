@@ -1,3 +1,6 @@
+# Names of accepted numbering schemes
+SCHEMES <- list("Chothia", "AHo", "IMGT", "Honneger", "Kabat")
+
 # Index ranges for CDRs in each renumbering scheme
 .CHOTHIA_RANGES <- list(
   L1 = c(26, 32),
