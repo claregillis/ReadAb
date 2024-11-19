@@ -109,6 +109,8 @@ Generative AI was used to help with creating unit tests for each function. Speci
 
 - Pagès, H., Aboyoun, P., Gentleman, R., & DebRoy, S. (2024). Biostrings: Efficient manipulation of biological strings (R package version 2.72.1). https://doi.org/10.18129/B9.bioc.Biostrings
 
+- R Core Team (2023). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. https://www.R-project.org/
+
 - Sievert, C. (2020). Interactive Web-Based Data Visualization with R, plotly, and shiny. Chapman and Hall/CRC Florida.
 
 - Wickham, H. (2007). Reshaping data with the reshape package. *Journal of Statistical Software*, 21(12).
