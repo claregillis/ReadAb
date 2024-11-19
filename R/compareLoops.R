@@ -49,8 +49,8 @@ AlignLoop <- function(antibodies, loop) {
     GetLoopSequence(antibody, loop))
   
   #Make an AAStringSet of the sequences and align using default values
-  loopSeqSet <- AAStringSet(loopStringSeqs)
-  alignedLoops <- AlignSeqs(loopSeqSet, verbose = FALSE)
+  loopSeqSet <- Biostrings::AAStringSet(loopStringSeqs)
+  alignedLoops <- DECIPHER::AlignSeqs(loopSeqSet, verbose = FALSE)
   
   return(alignedLoops)
 }
@@ -103,7 +103,7 @@ AssessLoopSimilarity <- function(antibodies, loop) {
   
   # Align the loops and get the distance then similarityb between them
   alignedLoops <- AlignLoop(antibodies, loop)
-  distanceMatrix <- DistanceMatrix(alignedLoops, verbose = FALSE)
+  distanceMatrix <- DECIPHER::DistanceMatrix(alignedLoops, verbose = FALSE)
   similarityMatrix <- 1 - distanceMatrix
   
   # Name the rows and columns after the antibodies

@@ -132,9 +132,9 @@ VisualizeAntibody <- function(antibody, mode = "all_atoms") {
                           z = numeric(0))
   }
   
-  plot <- plot_ly() %>%
+  plot <- plotly::plot_ly() %>%
     # Plot all antibody atoms underneath loop and antigen atoms
-    add_markers(
+    plotly::add_markers(
       data = allAtoms,
       x = ~ x,
       y = ~ y,
@@ -148,7 +148,7 @@ VisualizeAntibody <- function(antibody, mode = "all_atoms") {
     ) %>%
     
     # Plot loop atoms
-    add_markers(
+    plotly::add_markers(
       data = H1,
       x = ~ x,
       y = ~ y,
@@ -160,7 +160,7 @@ VisualizeAntibody <- function(antibody, mode = "all_atoms") {
       ),
       name = "H1"
     ) %>%
-    add_markers(
+    plotly::add_markers(
       data = H2,
       x = ~ x,
       y = ~ y,
@@ -172,7 +172,7 @@ VisualizeAntibody <- function(antibody, mode = "all_atoms") {
       ),
       name = "H2"
     ) %>%
-    add_markers(
+    plotly::add_markers(
       data = H3,
       x = ~ x,
       y = ~ y,
@@ -184,7 +184,7 @@ VisualizeAntibody <- function(antibody, mode = "all_atoms") {
       ),
       name = "H3"
     ) %>%
-    add_markers(
+    plotly::add_markers(
       data = L1,
       x = ~ x,
       y = ~ y,
@@ -196,7 +196,7 @@ VisualizeAntibody <- function(antibody, mode = "all_atoms") {
       ),
       name = "L1"
     ) %>%
-    add_markers(
+    plotly::add_markers(
       data = L2,
       x = ~ x,
       y = ~ y,
@@ -208,7 +208,7 @@ VisualizeAntibody <- function(antibody, mode = "all_atoms") {
       ),
       name = "L2"
     ) %>%
-    add_markers(
+    plotly::add_markers(
       data = L3,
       x = ~ x,
       y = ~ y,
@@ -222,7 +222,7 @@ VisualizeAntibody <- function(antibody, mode = "all_atoms") {
     ) %>%
     
     # Plot antigen atoms
-    add_markers(
+    plotly::add_markers(
       data = antigen,
       x = ~ x,
       y = ~ y,
@@ -314,10 +314,10 @@ DisplaySimilarityPlot <- function(similarityMatrix, loop) {
   }
   
   # Melt the similarity matrix for plotly
-  meltedMatrix <- melt(similarityMatrix)
+  meltedMatrix <- reshape2::melt(similarityMatrix)
   
   #display the heatmap
-  heatmap <- plot_ly(
+  heatmap <- plotly::plot_ly(
     data = meltedMatrix,
     x = ~ Var1,
     y = ~ Var2,
@@ -327,7 +327,7 @@ DisplaySimilarityPlot <- function(similarityMatrix, loop) {
     zmin = 0,
     zmax = 1
   ) %>%
-    layout(title = title)
+    plotly::layout(title = title)
   print(heatmap)
   
   return(invisible(NULL))

@@ -78,7 +78,7 @@ ReadAntibody <- function(pdbPath,
   loopRanges <- .GetNumberingRange(numbering)
   
   # Read the PDB
-  pdb <- read.pdb(pdbPath)
+  pdb <- bio3d::read.pdb(pdbPath)
   chains <- unique(pdb$atom$chain)
   
   # Ensure the chain identifiers (heavy1&2, light1&2, antigen) are valid
@@ -215,7 +215,7 @@ ReadAntibody <- function(pdbPath,
 #' @examples
 #' # Read in a PDB file and note the chain types in a data frame
 #' pdb_path <- system.file("extdata", "1ahw_chothia.pdb", package = ReadAb)
-#' pdb <- read.pdb(pdbPath)
+#' pdb <- bio3d::read.pdb(pdbPath)
 #' chainTypes <- data.frame(H = c('B', 'E'), L = c('A', 'D'))
 #'
 #' # Get the CDR index ranges for the numbering scheme used in the PDB
@@ -235,11 +235,11 @@ ReadAntibody <- function(pdbPath,
   loopStart <- ranges[[loopName]][1]
   loopEnd <- ranges[[loopName]][2]
   
-  atomCoords <- atom.select(pdb,
+  atomCoords <- bio3d::atom.select(pdb,
                             type = 'ATOM',
                             chain = sameTypeChains,
                             resno = loopStart:loopEnd)
-  atoms <- trim.pdb(pdb, inds = atomCoords)
+  atoms <- bio3d::trim.pdb(pdb, inds = atomCoords)
   
   return(atoms)
 }
