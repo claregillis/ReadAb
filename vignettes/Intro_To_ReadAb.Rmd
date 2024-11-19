@@ -26,6 +26,7 @@ knit_hooks$set(par = function(before, options, envir)
        par(family = "sans", mar=c(4.1,4.1,1.1,1.1), mgp=c(3,1,0), tcl=-0.5)
 })
 set.seed(1) # for exact reproducibility
+library(ReadAb)
 ```
 
 ## Introduction
@@ -86,7 +87,9 @@ A list of class 'pdb' from bio3d holding all L3 atoms from the PDB.
 For example, to read the antibody PDB 7uja renumbered with the Chothia scheme 
 (provided in the dataset):
 ```{r}
-ab7x94 <- ReadAb::ReadAntibody(pdb = system.file("extdata", "7x94_imgt.pdb", package = 'ReadAb'),
+pdbPath <- system.file("extdata", "7x94_imgt.pdb", package = 'ReadAb')
+print(pdbPath)
+ab7x94 <- ReadAb::ReadAntibody(pdb = pdbPath,
                           numbering = "IMGT",
                           heavy = "H",
                           light = "L",
@@ -119,14 +122,14 @@ ab7x96 <- ReadAb::ReadAntibody(pdb = system.file("extdata", "7x96_imgt.pdb", pac
                           light = "L",
                           antigen = "A")
 
-ReadAb::AssessLoopSimilarity(c(ab7x94, ab7x96), 'H1')
+ReadAb::AssessLoopSimilarity(list(ab7x94, ab7x96), 'H1')
 ```
 
 To compare all loops of the 1ahw and 7uja antibodies from the dataset, wieghting
 the H3 loop more highly:
 ```{r}
 ReadAb::AssessOverallLoopSimilarity(
-  c(ab7x94, ab7x96),
+  list(ab7x94, ab7x96),
   wH1 = 0.1,
   wH2 = 0.1,
   wH3 = 0.5,
@@ -147,7 +150,7 @@ and 'backbone' to display all backbone atoms (i.e. omit sidechains.)
 
 For example, to display all atoms of the 7uja antibody:
 ```{r}
-ReadAb::VisualizeAntibody(ab7x94, mode = "all")
+ReadAb::VisualizeAntibody(ab7x94, mode = "all_atoms")
 ```
 
 To change the color of antibody component, use the `setComponentColor` function.
@@ -166,8 +169,8 @@ Loop similarity matrices from `assessLoopSimilarity` and
 For example, to visualize the similarity of H3 binding loops between the 7uja and
 1ahw antibodies from the dataset:
 ```{r}
-H3Similarity <- ReadAb::AssessLoopSimilarity(c(ab7x94, ab7x96), 'H3')
-ReadAb::DisplaySimilarityPlot(H3Similarity)
+H3Similarity <- ReadAb::AssessLoopSimilarity(list(ab7x94, ab7x96), 'H3')
+ReadAb::DisplaySimilarityPlot(H3Similarity, "H3")
 ```
 
 ## Package Refernces
