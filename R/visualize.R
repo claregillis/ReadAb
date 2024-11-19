@@ -117,7 +117,7 @@ VisualizeAntibody <- function(antibody, mode = "all_atoms") {
   
   # Get antigen atoms if there is an antigen chain
   if (!(is.null(antibody$antigenChains))) {
-    antigenCoords <- atom.select(pdb, type = 'ATOM', chain = antibody$antigen)
+    antigenCoords <- atom.select(antibody$pdb, type = 'ATOM', chain = antibody$antigen)
     antigenAtoms <- trim.pdb(antibody$pdb, inds = antigenCoords)
     antigen <- na.omit(
       data.frame(
