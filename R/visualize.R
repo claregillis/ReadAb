@@ -108,7 +108,7 @@ VisualizeAntibody <- function(antibody, mode = "all_atoms") {
     )
   
   print(plot)
-  invisible(NULL)
+  return(plot)
 }
 
 #' Display heatmap of loop similarity matrix
@@ -201,7 +201,7 @@ DisplaySimilarityPlot <- function(similarityMatrix, loop) {
     plotly::layout(title = title)
   print(heatmap)
   
-  return(invisible(NULL))
+  return(heatmap)
 }
 
 # [END]
