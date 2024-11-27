@@ -20,7 +20,8 @@ Imports:
     bio3d,
     plotly,
     Biostrings,
-    DECIPHER
+    DECIPHER,
+    reshape2
 Suggests:
     testthat,
     testthat,
