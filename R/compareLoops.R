@@ -11,14 +11,14 @@
 #'
 #' @examples
 #' # Read in two antibodies
-#' path7x94 <- system.file("extdata", "7x94_imgt.pdb", package = ReadAb)
+#' path7x94 <- system.file("extdata", "7x94_imgt.pdb", package = "ReadAb")
 #' antibody1 <- ReadAntibody(pdb = path7x94,
 #'                           numbering = "IMGT",
 #'                           heavy = "H",
 #'                           light = "L",
 #'                           antigen = "A")
 #'
-#' path7x96 <- system.file("extdata", "7x96_imgt.pdb", package = ReadAb)
+#' path7x96 <- system.file("extdata", "7x96_imgt.pdb", package = "ReadAb")
 #' antibody1 <- ReadAntibody(pdb = path7x96,
 #'                           numbering = "IMGT",
 #'                           heavy = "H",
@@ -69,14 +69,14 @@ AlignLoop <- function(antibodies, loop) {
 #'
 #' @examples
 #' # Read in 2 antibodies
-#' path7x94 <- system.file("extdata", "7x94_imgt.pdb", package = ReadAb)
+#' path7x94 <- system.file("extdata", "7x94_imgt.pdb", package = "ReadAb")
 #' antibody1 <- ReadAntibody(pdb = path7x94,
 #'                           numbering = "IMGT",
 #'                           heavy = "H",
 #'                           light = "L",
 #'                           antigen = "A")
 #'
-#' path7x96 <- system.file("extdata", "7x96_imgt.pdb", package = ReadAb)
+#' path7x96 <- system.file("extdata", "7x96_imgt.pdb", package = "ReadAb")
 #' antibody1 <- ReadAntibody(pdb = path7x96,
 #'                           numbering = "IMGT",
 #'                           heavy = "H",
@@ -137,15 +137,15 @@ AssessLoopSimilarity <- function(antibodies, loop) {
 #'
 #' @examples
 #' # Read in 2 antibodies
-#' path7x94 <- system.file("extdata", "7x94_imgt.pdb", package = ReadAb)
+#' path7x94 <- system.file("extdata", "7x94_imgt.pdb", package = "ReadAb")
 #' antibody1 <- ReadAntibody(pdb = path7x94,
 #'                           numbering = "IMGT",
 #'                           heavy = "H",
 #'                           light = "L",
 #'                           antigen = "A")
 #'
-#' path7x96 <- system.file("extdata", "7x96_imgt.pdb", package = ReadAb)
-#' antibody1 <- ReadAntibody(pdb = path7x96,
+#' path7x96 <- system.file("extdata", "7x96_imgt.pdb", package = "ReadAb")
+#' antibody2 <- ReadAntibody(pdb = path7x96,
 #'                           numbering = "IMGT",
 #'                           heavy = "H",
 #'                           light = "L",
@@ -175,7 +175,7 @@ AssessOverallLoopSimilarity <- function(antibodies,
   }
   
   # Check if the weights sum very close to 1 
-  if (!(abs(sum(c(wH1, wH2, wH3, wL1, wL2, wL3)) - 1) <= 0.01)) {
+  if (abs(sum(c(wH1, wH2, wH3, wL1, wL2, wL3)) - 1) > 0.01) {
     stop(
       "wH1...wL3 arguments should be passed the weight of each loop H1..L3.
        wH1...wL3 must sum to 1."

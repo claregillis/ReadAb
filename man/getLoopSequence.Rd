@@ -4,20 +4,22 @@
 \alias{GetLoopSequence}
 \title{Get the amino acid sequence of a loop from an antibody}
 \usage{
-GetLoopSequence(antibody, loop)
+GetLoopSequence(antibody, loop, chain = NULL)
 }
 \arguments{
 \item{antibody}{A list of class 'antibody'}
 
 \item{loop}{The name of a loop (one of 'H1'...'L3')}
+
+\item{chain}{The identifier of the chain to get the loop from. Default is
+NULL, in which case the sequence of the earliest one in the PDB
+will be returned.}
 }
 \value{
 The sequence of the given loop in the antibody as a string
 }
 \description{
 Get the amino acid sequence the given loop in the given antibody.
-If there are more than one copies of the loop present, the sequence of the
-earliest one in the PDB will be returned.
 }
 \examples{
 pdbPath <- system.file("extdata", "7uja_chothia.pdb", package = "ReadAb")

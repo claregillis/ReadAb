@@ -39,205 +39,76 @@
 #'
 #' @export
 VisualizeAntibody <- function(antibody, mode = "all_atoms") {
-  if (!(class(antibody) == 'antibody')) {
-    stop("antibody argument should be passed an object of class antibody to
-         display")
+  # Validate inputs
+  if (!inherits(antibody, "antibody")) {
+    stop("The 'antibody' argument must be an object of class 'antibody'.")
   }
-  if (is.null(mode) ||
-      !(mode %in% c("all_atoms", "heavy", "backbone"))) {
-    stop("mode must be one of 'all_atoms', 'heavy' or 'backbone'")
-  }
-  
-  if (mode == "all_atoms") {
-    eletype <- .ATOM_TYPES
-    
-  } else if (mode == "backbone") {
-    eletype <- c("N", "CA", "C", "O")
-    
-  } else if (mode == "heavy") {
-    eletype <- na.omit(.ATOM_TYPES[!grepl("^H", .ATOM_TYPES)])
+  valid_modes <- c("all_atoms", "heavy", "backbone")
+  if (is.null(mode) || !(mode %in% valid_modes)) {
+    stop("The 'mode' argument must be one of: 'all_atoms', 'heavy', or 'backbone'.")
   }
   
-  # Get the atoms for each component of the antibody
-  allAtoms <- na.omit(
-    data.frame(
-      x <- antibody$pdb$atom$x[antibody$pdb$atom$elety %in% eletype],
-      y <- antibody$pdb$atom$y[antibody$pdb$atom$elety %in% eletype],
-      z <- antibody$pdb$atom$z[antibody$pdb$atom$elety %in% eletype]
-    )
+  # Select atom types based on mode
+  eletype <- switch(mode,
+                    all_atoms = .ATOM_TYPES,
+                    heavy = na.omit(.ATOM_TYPES[!grepl("^H", .ATOM_TYPES)]),
+                    backbone = c("N", "CA", "C", "O")
   )
   
-  H1 <- na.omit(
-    data.frame(
-      x = antibody$loops$H1$atom$x[antibody$pdb$atom$elety %in% eletype],
-      y = antibody$loops$H1$atom$y[antibody$pdb$atom$elety %in% eletype],
-      z = antibody$loops$H1$atom$z[antibody$pdb$atom$elety %in% eletype]
-    )
-  )
-  
-  H2 <- na.omit(
-    data.frame(
-      x = antibody$loops$H2$atom$x[antibody$pdb$atom$elety %in% eletype],
-      y = antibody$loops$H2$atom$y[antibody$pdb$atom$elety %in% eletype],
-      z = antibody$loops$H2$atom$z[antibody$pdb$atom$elety %in% eletype]
-    )
-  )
-  
-  H3 <- na.omit(
-    data.frame(
-      x = antibody$loops$H3$atom$x[antibody$pdb$atom$elety %in% eletype],
-      y = antibody$loops$H3$atom$y[antibody$pdb$atom$elety %in% eletype],
-      z = antibody$loops$H3$atom$z[antibody$pdb$atom$elety %in% eletype]
-    )
-  )
-  
-  L1 <- na.omit(
-    data.frame(
-      x = antibody$loops$L1$atom$x[antibody$pdb$atom$elety %in% eletype],
-      y = antibody$loops$L1$atom$y[antibody$pdb$atom$elety %in% eletype],
-      z = antibody$loops$L1$atom$z[antibody$pdb$atom$elety %in% eletype]
-    )
-  )
-  
-  L2 <- na.omit(
-    data.frame(
-      x = antibody$loops$L2$atom$x[antibody$pdb$atom$elety %in% eletype],
-      y = antibody$loops$L2$atom$y[antibody$pdb$atom$elety %in% eletype],
-      z = antibody$loops$L2$atom$z[antibody$pdb$atom$elety %in% eletype]
-    )
-  )
-  
-  L3 <- na.omit(
-    data.frame(
-      x = antibody$loops$L3$atom$x[antibody$pdb$atom$elety %in% eletype],
-      y = antibody$loops$L3$atom$y[antibody$pdb$atom$elety %in% eletype],
-      z = antibody$loops$L3$atom$z[antibody$pdb$atom$elety %in% eletype]
-    )
-  )
-  
-  # Get antigen atoms if there is an antigen chain
-  if (!(is.null(antibody$antigenChains))) {
-    antigenCoords <- atom.select(antibody$pdb, type = 'ATOM', chain = antibody$antigen)
-    antigenAtoms <- trim.pdb(antibody$pdb, inds = antigenCoords)
-    antigen <- na.omit(
+  # Helper function to extract atom data
+  extract_atoms <- function(atoms, eletype) {
+    na.omit(
       data.frame(
-        x = antigenAtoms$atom$x[antibody$pdb$atom$elety %in% eletype],
-        y = antigenAtoms$atom$y[antibody$pdb$atom$elety %in% eletype],
-        z = antigenAtoms$atom$z[antibody$pdb$atom$elety %in% eletype]
+        x = atoms$x[atoms$elety %in% eletype],
+        y = atoms$y[atoms$elety %in% eletype],
+        z = atoms$z[atoms$elety %in% eletype]
       )
     )
-  } else{
-    antigen <- data.frame(x = numeric(0),
-                          y = numeric(0),
-                          z = numeric(0))
   }
   
+  # Extract atom data for antibody components
+  allAtoms <- extract_atoms(antibody$pdb$atom, eletype)
+  loops <- lapply(antibody$loops, function(loop) extract_atoms(loop$atom, eletype))
+  
+  # Extract antigen atom data if applicable
+  antigen <- if (!is.null(antibody$antigenChains)) {
+    antigenCoords <- atom.select(antibody$pdb, type = 'ATOM', chain = antibody$antigen)
+    antigenAtoms <- trim.pdb(antibody$pdb, inds = antigenCoords)
+    extract_atoms(antigenAtoms$atom, eletype)
+  } else {
+    data.frame(x = numeric(0), y = numeric(0), z = numeric(0))
+  }
+  
+  # Create the 3D plot
   plot <- plotly::plot_ly() %>%
-    # Plot all antibody atoms underneath loop and antigen atoms
+    # Plot all antibody atoms
     plotly::add_markers(
-      data = allAtoms,
-      x = ~ x,
-      y = ~ y,
-      z = ~ z,
-      marker = list(
-        color = antibody$color$other,
-        size = 1,
-        opacity = 0.5
-      ),
+      data = allAtoms, x = ~x, y = ~y, z = ~z,
+      marker = list(color = antibody$colors$other, size = 1, opacity = 0.5),
       name = "Other"
-    ) %>%
-    
-    # Plot loop atoms
+    )
+  
+  # Add loop atoms
+  loop_names <- names(loops)
+  for (i in seq_along(loops)) {
+    plot <- plot %>%
+      plotly::add_markers(
+        data = loops[[i]], x = ~x, y = ~y, z = ~z,
+        marker = list(color = antibody$colors[[loop_names[i]]], size = 1.5, opacity = 1),
+        name = loop_names[i]
+      )
+  }
+  
+  # Add antigen atoms
+  plot <- plot %>%
     plotly::add_markers(
-      data = H1,
-      x = ~ x,
-      y = ~ y,
-      z = ~ z,
-      marker = list(
-        color = antibody$colors$H1,
-        size = 1.5,
-        opacity = 1
-      ),
-      name = "H1"
-    ) %>%
-    plotly::add_markers(
-      data = H2,
-      x = ~ x,
-      y = ~ y,
-      z = ~ z,
-      marker = list(
-        color = antibody$colors$H2,
-        size = 1.5,
-        opacity = 1
-      ),
-      name = "H2"
-    ) %>%
-    plotly::add_markers(
-      data = H3,
-      x = ~ x,
-      y = ~ y,
-      z = ~ z,
-      marker = list(
-        color = antibody$colors$H3,
-        size = 1.5,
-        opacity = 1
-      ),
-      name = "H3"
-    ) %>%
-    plotly::add_markers(
-      data = L1,
-      x = ~ x,
-      y = ~ y,
-      z = ~ z,
-      marker = list(
-        color = antibody$colors$L1,
-        size = 1.5,
-        opacity = 1
-      ),
-      name = "L1"
-    ) %>%
-    plotly::add_markers(
-      data = L2,
-      x = ~ x,
-      y = ~ y,
-      z = ~ z,
-      marker = list(
-        color = antibody$colors$L2,
-        size = 1.5,
-        opacity = 1
-      ),
-      name = "L2"
-    ) %>%
-    plotly::add_markers(
-      data = L3,
-      x = ~ x,
-      y = ~ y,
-      z = ~ z,
-      marker = list(
-        color = antibody$colors$L3,
-        size = 1.5,
-        opacity = 1
-      ),
-      name = "L3"
-    ) %>%
-    
-    # Plot antigen atoms
-    plotly::add_markers(
-      data = antigen,
-      x = ~ x,
-      y = ~ y,
-      z = ~ z,
-      marker = list(
-        color = antibody$colors$antigen,
-        size = 1,
-        opacity = 1
-      ),
+      data = antigen, x = ~x, y = ~y, z = ~z,
+      marker = list(color = antibody$colors$antigen, size = 1, opacity = 1),
       name = "Antigen"
     )
   
   print(plot)
-  
-  return(invisible(NULL))
+  invisible(NULL)
 }
 
 #' Display heatmap of loop similarity matrix
@@ -253,21 +124,21 @@ VisualizeAntibody <- function(antibody, mode = "all_atoms") {
 #'
 #' @examples
 #' # Read in 3 antibodies
-#' path7x94 <- system.file("extdata", "7x94_imgt.pdb", package = ReadAb)
+#' path7x94 <- system.file("extdata", "7x94_imgt.pdb", package = "ReadAb")
 #' antibody1 <- ReadAntibody(pdb = path7x94,
 #'                           numbering = "IMGT",
 #'                           heavy = "H",
 #'                           light = "L",
 #'                           antigen = "A")
 #'
-#' path7x96 <- system.file("extdata", "7x96_imgt.pdb", package = ReadAb)
+#' path7x96 <- system.file("extdata", "7x96_imgt.pdb", package = "ReadAb")
 #' antibody1 <- ReadAntibody(pdb = path7x96,
 #'                           numbering = "IMGT",
 #'                           heavy = "H",
 #'                           light = "L",
 #'                           antigen = "A")
 #' 
-#' path8sau <- system.file("extdata", "8sau_chothia.pdb", package = ReadAb)
+#' path8sau <- system.file("extdata", "8sau_chothia.pdb", package = "ReadAb")
 #' antibody3 <- ReadAntibody(pdb = path8sau,
 #'                           numbering = "Chothia",
 #'                           heavy = c("C", "H", "M"),

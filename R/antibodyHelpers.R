@@ -1,11 +1,12 @@
 #' Get the amino acid sequence of a loop from an antibody
 #'
 #' Get the amino acid sequence the given loop in the given antibody.
-#' If there are more than one copies of the loop present, the sequence of the
-#' earliest one in the PDB will be returned.
 #'
 #' @param antibody A list of class 'antibody'
 #' @param loop The name of a loop (one of 'H1'...'L3')
+#' @param chain The identifier of the chain to get the loop from. Default is 
+#'              NULL, in which case the sequence of the earliest one in the PDB 
+#'              will be returned.
 #'
 #' @return The sequence of the given loop in the antibody as a string
 #'
@@ -22,7 +23,7 @@
 #' getLoopSequence(antibody = antibody, loop = 'H1')
 #'
 #' @export
-GetLoopSequence <- function(antibody, loop) {
+GetLoopSequence <- function(antibody, loop, chain = NULL) {
   if (!(class(antibody) == 'antibody')) {
     stop(
       "antibody argument should be passed an object of class antibody from
@@ -39,12 +40,21 @@ GetLoopSequence <- function(antibody, loop) {
   # Get the loop
   selectedLoop <- antibody$loops[[loop]]
   
-  # Select the first chain present in the PDB that contains this loop
-  firstChain <- selectedLoop$atom$chain[1]
+  # Get the chain names
+  chains <- unique(selectedLoop$atom$chain)
+  
+  if(!(is.null(chain) || chain %in% chains)){
+    stop("The chain argument should be passed NULL or an ID of a chain in the antibody")
+  }
+  
+  if(is.null(chain)){
+    # Select the first chain present in the PDB that contains this loop
+    chain <- selectedLoop$atom$chain[1]
+  }
   
   # Get the sequence of the loop in the first chain
   threeLetterCodes <- selectedLoop$atom$resid[selectedLoop$atom$elety == 'CA' &
-                                                selectedLoop$atom$chain == firstChain]
+                                                selectedLoop$atom$chain == chain]
   oneLetterCodes <- .CODE_THREE_TO_ONE[threeLetterCodes]
   seq <- paste(oneLetterCodes, collapse = "")
   
