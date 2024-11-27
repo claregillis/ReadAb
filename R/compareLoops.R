@@ -174,10 +174,8 @@ AssessOverallLoopSimilarity <- function(antibodies,
     stop("antibodies argument should be passed a list of antibodies")
   }
   
-  # Use all.equal() to allow for floating-point tolerance
-  if (!isTRUE(all.equal(sum(c(
-    wH1, wH2, wH3, wL1, wL2, wL3
-  )), 1))) {
+  # Check if the weights sum very close to 1 
+  if (!(abs(sum(c(wH1, wH2, wH3, wL1, wL2, wL3)) - 1 <= 0.01))) {
     stop(
       "wH1...wL3 arguments should be passed the weight of each loop H1..L3.
        wH1...wL3 must sum to 1."
