@@ -22,15 +22,16 @@
 #'                          antigen = c("A", "K", "C"))
 #'
 #' # View all atoms of the antibody
-#' VisualizeAntibody(antibody, mode = "all_atoms")
+#' plot <- VisualizeAntibody(antibody, mode = "all_atoms")
+#' print(plot)
 #'
 #' # View the antibody's heavy atoms
-#' VisualizeAntibody(antibody, mode = "heavy")
-#'
+#' plot <- VisualizeAntibody(antibody, mode = "heavy")
+#' print(plot)
+#' 
 #' # View the backbone only
-#' VisualizeAntibody(antibody, mode = "backbone")
-#'
-#' TODO add bonds
+#' plot <- VisualizeAntibody(antibody, mode = "backbone")
+#' print(plot)
 #'
 #' @import dplyr
 #' @importFrom plotly plot_ly
@@ -106,8 +107,7 @@ VisualizeAntibody <- function(antibody, mode = "all_atoms") {
       marker = list(color = antibody$colors$antigen, size = 1, opacity = 1),
       name = "Antigen"
     )
-  
-  print(plot)
+
   return(plot)
 }
 
@@ -167,7 +167,8 @@ VisualizeAntibody <- function(antibody, mode = "all_atoms") {
 #'                                           wL2 = 0.1,
 #'                                           wL3 = 0.1)
 #'
-#' DisplaySimilarityPlot(overallSim, 'all')
+#' heatmap <- DisplaySimilarityPlot(overallSim, 'all')
+#' print(heatmap)
 #'
 #' @importFrom reshape2 melt
 #' @importFrom plotly plot_ly
@@ -199,7 +200,6 @@ DisplaySimilarityPlot <- function(similarityMatrix, loop) {
     zmax = 1
   ) %>%
     plotly::layout(title = title)
-  print(heatmap)
   
   return(heatmap)
 }

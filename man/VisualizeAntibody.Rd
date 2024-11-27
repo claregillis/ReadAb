@@ -29,14 +29,15 @@ antibody <- ReadAntibody(pdb = pdbPath,
                          antigen = c("A", "K", "C"))
 
 # View all atoms of the antibody
-VisualizeAntibody(antibody, mode = "all_atoms")
+plot <- VisualizeAntibody(antibody, mode = "all_atoms")
+print(plot)
 
 # View the antibody's heavy atoms
-VisualizeAntibody(antibody, mode = "heavy")
+plot <- VisualizeAntibody(antibody, mode = "heavy")
+print(plot)
 
 # View the backbone only
-VisualizeAntibody(antibody, mode = "backbone")
-
-TODO add bonds
+plot <- VisualizeAntibody(antibody, mode = "backbone")
+print(plot)
 
 }

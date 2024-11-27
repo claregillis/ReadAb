@@ -61,6 +61,7 @@ overallSim <- assessOverallLoopSimilarity(list(Antibody1 = antibody1,
                                           wL2 = 0.1,
                                           wL3 = 0.1)
 
-DisplaySimilarityPlot(overallSim, 'all')
+heatmap <- DisplaySimilarityPlot(overallSim, 'all')
+print(heatmap)
 
 }
