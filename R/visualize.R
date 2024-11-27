@@ -11,7 +11,7 @@
 #'             "heavy": to display all heavy (non-hydrogen) atoms
 #'             "backbone": to omit sidechain and hydrogen atoms from the plot
 #'
-#' @return NULL
+#' @return a plotly scatterplot containing the antibody atoms
 #'
 #' @examples
 #' pdbPath <- system.file("extdata", "7uja_chothia.pdb", package = "ReadAb")
@@ -129,7 +129,7 @@ VisualizeAntibody <- function(antibody, mode = "all_atoms") {
 #' @param loop The name of the loop being compared (should be one of 'H1', 'H2',
 #' 'H3', 'L1', 'L2', 'L3', or 'all')
 #'
-#' @returns NULL
+#' @returns a plotly heatmap representation of the similarityMatrix
 #'
 #' @examples
 #' # Read in 3 antibodies

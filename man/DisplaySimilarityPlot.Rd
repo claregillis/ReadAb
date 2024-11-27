@@ -13,6 +13,9 @@ DisplaySimilarityPlot(similarityMatrix, loop)
 \item{loop}{The name of the loop being compared (should be one of 'H1', 'H2',
 'H3', 'L1', 'L2', 'L3', or 'all')}
 }
+\value{
+a plotly heatmap representation of the similarityMatrix
+}
 \description{
 Display a heatmap of a matrix denoting the similarity between antibody loops
 }

@@ -14,6 +14,9 @@ VisualizeAntibody(antibody, mode = "all_atoms")
 "heavy": to display all heavy (non-hydrogen) atoms
 "backbone": to omit sidechain and hydrogen atoms from the plot}
 }
+\value{
+a plotly scatterplot containing the antibody atoms
+}
 \description{
 Displays the atoms of the antibody in 3D with atoms color coded using the
 colors element of the antibody. Can display in 3 modes: "all_atoms" to show
