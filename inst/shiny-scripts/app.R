@@ -155,37 +155,48 @@ ui <- fluidPage(
   )
 )
 
-server <- function(input, output){
+server <- function(input, output) {
+  
   observeEvent(eventExpr = input$runButton, {
+    
+    # Initialize an empty list to store antibodies
     antibodies <- list()
-    for(i in 1:4){
+    
+    # Loop over the antibody inputs (1 to 4)
+    for(i in 1:4) {
       file <- paste0("file", i)
-      if (!is.null(input[[file]])){
+      
+      # Process only if a file is uploaded
+      if (!is.null(input[[file]])) {
         pdb <- paste0("pdb", i)
         scheme <- paste0("scheme", i)
         heavy <- paste0("heavy", i)
         light <- paste0("light", i)
         
+        # Parse heavy and light chain IDs
         heavyIDs <- strsplit(input[[heavy]], ",")[[1]]
         lightIDs <- strsplit(input[[light]], ",")[[1]]
         
+        # Read the antibody data using the ReadAb package
         antibody <- ReadAb::ReadAntibody(pdbPath = input[[file]]$datapath, 
                                          numbering = input[[scheme]],
                                          heavy = heavyIDs,
-                                         light = lightIDs
-                                         )
+                                         light = lightIDs)
+        
+        # Store antibody in the list by PDB ID
         antibodies[[input[[pdb]]]] = antibody
       }
     }
     
-    # Compare each loop and all loops of the uploaded antibodies to get similarity
-    # matrices
+    # Assess similarity for each loop type
     h1Similarity <- ReadAb::AssessLoopSimilarity(antibodies, loop = 'H1')
     h2Similarity <- ReadAb::AssessLoopSimilarity(antibodies, loop = 'H2')
     h3Similarity <- ReadAb::AssessLoopSimilarity(antibodies, loop = 'H3')
     l1Similarity <- ReadAb::AssessLoopSimilarity(antibodies, loop = 'L1')
     l2Similarity <- ReadAb::AssessLoopSimilarity(antibodies, loop = 'L2')
     l3Similarity <- ReadAb::AssessLoopSimilarity(antibodies, loop = 'L3')
+    
+    # Assess overall similarity with weights
     overallSimilarity <- ReadAb::AssessOverallLoopSimilarity(antibodies,
                                                              wH1 = as.numeric(input$wH1),
                                                              wH2 = as.numeric(input$wH2),
