@@ -7,7 +7,7 @@
 #' @param loop The name of the loop to align (one of 'H1', 'H2', 'H3', 'L1',
 #'             'L2', 'L3')
 #'
-#' @return An AAStringSet of the aligned loops
+#' @return An Biostrings AAStringSet (amino acid string set) of the aligned loops
 #'
 #' @examples
 #' # Read in two antibodies

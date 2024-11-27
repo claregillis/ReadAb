@@ -13,7 +13,7 @@ AlignLoop(antibodies, loop)
 'L2', 'L3')}
 }
 \value{
-An AAStringSet of the aligned loops
+An Biostrings AAStringSet (amino acid string set) of the aligned loops
 }
 \description{
 Takes multiple antibodies and the name of a loop (one of 'H1'...'L3') and
