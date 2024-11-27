@@ -34,9 +34,11 @@ antibody <- ReadAntibody(pdb = pdbPath,
 updatedAntibody <- SetComponentColor(antibody, 'other', '#42f5dd')
 
 # See the antibody with the original color palette
-VisualizeAntibody(antibody)
+plot <- VisualizeAntibody(antibody)
+print(plot)
 
 # See the antibody with 'other' changed to '#42f5dd'
-VisualizeAntibody(updatedAntibody)
+plot <- VisualizeAntibody(updatedAntibody)
+print(plot)
 
 }

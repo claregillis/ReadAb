@@ -33,7 +33,6 @@
 #'                      antigen, and other) to a color for visualization
 #'
 #' @examples
-#' Examples:
 #' chothiaPath <- system.file("extdata", "7uja_chothia.pdb", package = "ReadAb")
 #' chothiaAntibody <- ReadAntibody(pdb = chothiaPath,
 #'                                  numbering = "Chothia",

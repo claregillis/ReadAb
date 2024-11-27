@@ -41,7 +41,7 @@ antibody3 <- ReadAntibody(pdb = path8sau,
 
 # Example 1:
 # Compare the H3 loops of the antibodies and display the plot
-H3Sim <- assessLoopSimilarity(list(Antibody1 = antibody1,
+H3Sim <- AssessLoopSimilarity(list(Antibody1 = antibody1,
                                    Antibody2 = antibody2,
                                    Antibody3 = antibody3),
                               'H3')
@@ -51,7 +51,7 @@ DisplaySimilarityPlot(H3Sim, 'H3')
 # Example 2:
 # Compare the loops of antibody1 and antibody2, weighting H3 higher than
 # other loops
-overallSim <- assessOverallLoopSimilarity(list(Antibody1 = antibody1,
+overallSim <- AssessOverallLoopSimilarity(list(Antibody1 = antibody1,
                                                Antibody2 = antibody2,
                                                Antibody3 = antibody3),
                                           wH1 = 0.1,

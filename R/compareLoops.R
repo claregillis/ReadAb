@@ -19,7 +19,7 @@
 #'                           antigen = "A")
 #'
 #' path7x96 <- system.file("extdata", "7x96_imgt.pdb", package = "ReadAb")
-#' antibody1 <- ReadAntibody(pdb = path7x96,
+#' antibody2 <- ReadAntibody(pdb = path7x96,
 #'                           numbering = "IMGT",
 #'                           heavy = "H",
 #'                           light = "L",
@@ -77,7 +77,7 @@ AlignLoop <- function(antibodies, loop) {
 #'                           antigen = "A")
 #'
 #' path7x96 <- system.file("extdata", "7x96_imgt.pdb", package = "ReadAb")
-#' antibody1 <- ReadAntibody(pdb = path7x96,
+#' antibody2 <- ReadAntibody(pdb = path7x96,
 #'                           numbering = "IMGT",
 #'                           heavy = "H",
 #'                           light = "L",

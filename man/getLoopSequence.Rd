@@ -31,6 +31,6 @@ antibody <- ReadAntibody(pdb = pdbPath,
 
 # Get the sequence of the H1 loop in antibody in the first chain that appears
 # in the PDB (in this case, "B")
-getLoopSequence(antibody = antibody, loop = 'H1')
+GetLoopSequence(antibody = antibody, loop = 'H1')
 
 }

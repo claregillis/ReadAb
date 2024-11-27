@@ -20,7 +20,7 @@
 #'
 #' # Get the sequence of the H1 loop in antibody in the first chain that appears
 #' # in the PDB (in this case, "B")
-#' getLoopSequence(antibody = antibody, loop = 'H1')
+#' GetLoopSequence(antibody = antibody, loop = 'H1')
 #'
 #' @export
 GetLoopSequence <- function(antibody, loop, chain = NULL) {
@@ -86,10 +86,12 @@ GetLoopSequence <- function(antibody, loop, chain = NULL) {
 #' updatedAntibody <- SetComponentColor(antibody, 'other', '#42f5dd')
 #'
 #' # See the antibody with the original color palette
-#' VisualizeAntibody(antibody)
+#' plot <- VisualizeAntibody(antibody)
+#' print(plot)
 #'
 #' # See the antibody with 'other' changed to '#42f5dd'
-#' VisualizeAntibody(updatedAntibody)
+#' plot <- VisualizeAntibody(updatedAntibody)
+#' print(plot)
 #'
 #' @export
 SetComponentColor <- function(antibody, component, color) {

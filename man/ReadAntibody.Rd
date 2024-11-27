@@ -53,7 +53,6 @@ Note AHo and Honneger are equivalent, but both names are often used, so both
 are supported
 }
 \examples{
-Examples:
 chothiaPath <- system.file("extdata", "7uja_chothia.pdb", package = "ReadAb")
 chothiaAntibody <- ReadAntibody(pdb = chothiaPath,
                                  numbering = "Chothia",
