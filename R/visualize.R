@@ -180,7 +180,7 @@ DisplaySimilarityPlot <- function(similarityMatrix, loop) {
   if (!is.null(loop) && loop == 'all') {
     title <- "Similarity across all loops"
   } else if (is.null(loop) || !(loop %in% .ALL_LOOPS)) {
-    stop("loop argument must be one of 'H1', 'H2', 'H3', 'L1', 'L2' or 'L3'")
+    stop("loop argument must be one of 'H1', 'H2', 'H3', 'L1', 'L2', 'L3', or 'all'")
   } else{
     title <- paste("Similarity between", loop, "loops")
   }
