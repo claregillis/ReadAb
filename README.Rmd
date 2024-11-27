@@ -48,11 +48,11 @@ library("devtools")
 devtools::install_github("claregillis/ReadAb", build_vignettes = TRUE)
 library("ReadAb")
 ```
-NOTE: I am having issues with the vignette failing to build, so you may need to
-install using 
-```r
-devtools::install_github("claregillis/ReadAb", build_vignettes = FALSE)
-```
+
+To run the Shiny app:
+``` r
+runTestingPackage()
+``` 
 
 ## Overview
 
