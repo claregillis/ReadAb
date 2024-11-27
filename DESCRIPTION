@@ -22,7 +22,10 @@ Imports:
     Biostrings,
     DECIPHER
 Suggests:
-    testthat
+    testthat,
+    testthat,
+    knitr,
+    rmarkdown
 LazyData: true
 Depends: R (>= 3.1.0)
 biocViews:
