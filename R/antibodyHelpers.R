@@ -24,27 +24,28 @@
 #'
 #' @export
 GetLoopSequence <- function(antibody, loop, chain = NULL) {
-  if (!(class(antibody) == 'antibody')) {
+  if (!inherits(antibody, "antibody")) {
     stop(
-      "antibody argument should be passed an object of class antibody from
-         which to retreive a loop sequence."
+      "Invalid input: 'antibody' must be an object of class 'antibody'.\n",
+      "Ensure you have created or loaded an antibody object correctly."
     )
   }
+  
   if (!(loop %in% .ALL_LOOPS)) {
     stop(
-      "loop argument should be passed the name of an antibody loop. Must be
-         one of 'H1', 'H2', 'H3', 'L1', 'L2', or 'L3'"
+      "Invalid input: 'loop' must be one of 'H1', 'H2', 'H3', 'L1', 'L2', or 'L3'.\n",
+      "Check that you have provided a valid loop name."
     )
   }
   
-  # Get the loop
   selectedLoop <- antibody$loops[[loop]]
-  
-  # Get the chain names
   chains <- unique(selectedLoop$atom$chain)
   
-  if(!(is.null(chain) || chain %in% chains)){
-    stop("The chain argument should be passed NULL or an ID of a chain in the antibody")
+  if (!(is.null(chain) || chain %in% chains)) {
+    stop(
+      "Invalid input: 'chain' must be either NULL or a valid chain identifier in the antibody.\n",
+      "Available chains for this loop: ", paste(chains, collapse = ", ")
+    )
   }
   
   if(is.null(chain)){
@@ -95,16 +96,25 @@ GetLoopSequence <- function(antibody, loop, chain = NULL) {
 #'
 #' @export
 SetComponentColor <- function(antibody, component, color) {
-  if (!(component %in% .ALL_LOOPS ||
-        component %in% c('other', 'antigen', 'heavy', 'light'))) {
+  if (!inherits(antibody, "antibody")) {
     stop(
-      "component argument should be passed the name of the component to
-         set the color of. Must be one of 'H1', 'H2', 'H3', 'L1', 'L2', 'L3', 'heavy, 'light,
-         'antigen', or 'other'"
+      "Invalid input: 'antibody' must be an object of class 'antibody'.\n",
+      "Ensure you are passing a valid antibody object."
     )
   }
-  if (!(.IsValidColor(color))) {
-    stop("color argument should be passed a valid color")
+  
+  if (!(component %in% .ALL_LOOPS || component %in% c("other", "antigen", "heavy", "light"))) {
+    stop(
+      "Invalid input: 'component' must be one of the following:\n",
+      "'H1', 'H2', 'H3', 'L1', 'L2', 'L3', 'heavy', 'light', 'antigen', or 'other'."
+    )
+  }
+  
+  if (!.IsValidColor(color)) {
+    stop(
+      "Invalid input: 'color' must be a valid color name or code recognized by R.\n",
+      "Example of valid colors: 'red', '#42f5dd'."
+    )
   }
   antibody$colors[[component]] <- color
   return(antibody)

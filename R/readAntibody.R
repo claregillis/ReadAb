@@ -51,7 +51,7 @@
 #' print("Chothia antibody:")
 #' print(chothiaAntibody)
 #' 
-#' print("IMGT antibody: ")
+#' print("IMGT antibody:")
 #' print(imgtAntibody)
 #'
 #'
@@ -64,45 +64,37 @@ ReadAntibody <- function(pdbPath,
                          heavy = 'H',
                          light = 'L',
                          antigen = NULL) {
-  # Check pdb is valid
-  if (!(is.character(pdbPath) &&
-        file.exists(pdbPath) &&
-        
-        grepl("\\.pdb$", pdbPath))) {
-    stop("pdbPath argument should be provided a string path to a PDB file")
-  }
-  
-  # Ensure the renumbering scheme is valid
-  if (!(is.character(numbering) &&
-        length(numbering) == 1 && numbering %in% SCHEMES)) {
+  # Validate pdbPath
+  if (!is.character(pdbPath) || length(pdbPath) != 1 || !file.exists(pdbPath) || !grepl("\\.pdb$", pdbPath)) {
     stop(
-      "numbering argument should be provided a string indicating the
-         renumbering scheme type. Must be one of
-         ['Kabat', 'Chothia', 'IMGT', 'AHo', 'Honneger']"
+      "Invalid 'pdbPath': Please provide a valid file path to a PDB file as a string. ",
+      "Ensure the file exists and has the '.pdb' extension."
     )
   }
+  
+  # Validate numbering scheme
+  if (!is.character(numbering) || length(numbering) != 1 || !(numbering %in% SCHEMES)) {
+    stop(
+      "Invalid 'numbering': The renumbering scheme must be one of the following: ",
+      paste(SCHEMES, collapse = ", "), ". For example, 'Chothia' or 'IMGT'."
+    )
+  }
+  
   loopRanges <- .GetNumberingRange(numbering)
   
   # Read the PDB
   pdb <- bio3d::read.pdb(pdbPath)
   chains <- unique(pdb$atom$chain)
   
-  # Ensure the chain identifiers (heavy1&2, light1&2, antigen) are valid
-  # note the antigen may or may not be present, so may be NULL
-  if (!(all(sapply(heavy, .IsValidChain, realChains = chains)) &&
-        all(sapply(light, .IsValidChain, realChains = chains)) &&
-        (all(
-          sapply(antigen, function(oneAntigen)
-            .IsValidChain(oneAntigen, realChains = chains))
-        )) ||
-        is.null(antigen))) {
-    stop(
-      "heavy, light, and antigen arguments should be passed individual
-          character chain identifiers or vectors of character chain identifiers
-          for the heavy chain, light chain, and antigen respectively. If an
-          element is missing (ex. no antigen present in the PDB), an argument
-          may be passed NA"
-    )
+  # Validate chain identifiers
+  check_chains <- function(chain, role) {
+    if (!all(sapply(chain, .IsValidChain, realChains = chains))) {
+      stop(
+        "Invalid '", role, "' chains: Please provide valid chain identifiers. ",
+        "Chains must be single-character strings present in the PDB file. ",
+        "Available chains: ", paste(chains, collapse = ", "), "."
+      )
+    }
   }
   
   # Get the chain ids for each type (H for heavy, L for light)

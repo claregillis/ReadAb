@@ -42,14 +42,14 @@ test_that("alignLoop returns an error with invalid antibody class", {
   invalid_antibody <- list(class = "not_antibody")
   expect_error(
     AlignLoop(list(invalid_antibody, antibody2), "H1"),
-    "antibodies argument should be passed a list of two antibodies"
+    "The 'antibodies' parameter must be a list of valid antibody objects. Ensure that each element in the list is of class 'antibody'."
   )
 })
 
 test_that("alignLoop returns an error with invalid loop name", {
   expect_error(
     AlignLoop(list(antibody1, antibody2), "InvalidLoop"),
-    "loop argument should be passed the name of an antibody loop."
+    "The 'loop' parameter must specify one of the valid loop names: 'H1', 'H2', 'H3', 'L1', 'L2', or 'L3'. Provided value: 'InvalidLoop'."
   )
 })
 
@@ -65,14 +65,14 @@ test_that("assessLoopSimilarity returns an error with invalid antibody class", {
   invalid_antibody <- list(class = "not_antibody")
   expect_error(
     AssessLoopSimilarity(list(invalid_antibody, antibody2), "H1"),
-    "antibodies argument should be passed a list of antibodies"
+    "The 'antibodies' parameter must be a list of valid antibody objects. Ensure that each element in the list is of class 'antibody'."
   )
 })
 
 test_that("assessLoopSimilarity returns an error with invalid loop name", {
   expect_error(
     AssessLoopSimilarity(list(antibody1, antibody2), "InvalidLoop"),
-    "loop argument should be passed the name of an antibody loop."
+    "The 'loop' parameter must specify one of the valid loop names: 'H1', 'H2', 'H3', 'L1', 'L2', or 'L3'. Provided value: 'InvalidLoop'."
   )
 })
 
@@ -96,14 +96,15 @@ test_that("assessOverallLoopSimilarity returns an error with invalid antibody cl
   invalid_antibody <- list(class = "not_antibody")
   expect_error(
     AssessOverallLoopSimilarity(list(invalid_antibody, antibody2)),
-    "antibodies argument should be passed a list of antibodies"
+    "The 'antibodies' parameter must be a list of valid antibody objects. Ensure that each element in the list is of class 'antibody'."
   )
 })
 
 test_that("assessOverallLoopSimilarity returns an error when weights do not sum to 1", {
   expect_error(
     AssessOverallLoopSimilarity(list(antibody1, antibody2), wH1 = 0.2, wH2 = 0.2, wH3 = 0.2, wL1 = 0.2, wL2 = 0.2, wL3 = 0.2),
-    "wH1...wL3 must sum to 1."
+    regexp = "^The weights for loops",
+    fixed = FALSE
   )
 })
 

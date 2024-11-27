@@ -33,14 +33,17 @@
 #'
 #' @export
 AlignLoop <- function(antibodies, loop) {
-  if (!(all(sapply(antibodies, function(x)
-    class(x) == "antibody")))) {
-    stop("antibodies argument should be passed a list of two antibodies")
-  }
-  if (!(loop %in% .ALL_LOOPS)) {
+  if (!all(sapply(antibodies, function(x) class(x) == "antibody"))) {
     stop(
-      "loop argument should be passed the name of an antibody loop. Must be
-         one of 'H1', 'H2', 'H3', 'L1', 'L2', or 'L3'"
+      "The 'antibodies' parameter must be a list of valid antibody objects. ",
+      "Ensure that each element in the list is of class 'antibody'."
+    )
+  }
+  
+  if (!loop %in% .ALL_LOOPS) {
+    stop(
+      "The 'loop' parameter must specify one of the valid loop names: 'H1', 'H2', 'H3', 'L1', 'L2', or 'L3'. ",
+      "Provided value: '", loop, "'."
     )
   }
   
@@ -90,14 +93,17 @@ AlignLoop <- function(antibodies, loop) {
 #'
 #' @export
 AssessLoopSimilarity <- function(antibodies, loop) {
-  if (!(all(sapply(antibodies, function(x)
-    class(x) == "antibody")))) {
-    stop("antibodies argument should be passed a list of antibodies")
-  }
-  if (!(loop %in% .ALL_LOOPS)) {
+  if (!all(sapply(antibodies, function(x) class(x) == "antibody"))) {
     stop(
-      "loop argument should be passed the name of an antibody loop. Must be
-         one of 'H1', 'H2', 'H3', 'L1', 'L2', or 'L3'"
+      "The 'antibodies' parameter must be a list of valid antibody objects. ",
+      "Ensure that each element in the list is of class 'antibody'."
+    )
+  }
+  
+  if (!loop %in% .ALL_LOOPS) {
+    stop(
+      "The 'loop' parameter must specify one of the valid loop names: 'H1', 'H2', 'H3', 'L1', 'L2', or 'L3'. ",
+      "Provided value: '", loop, "'."
     )
   }
   
@@ -169,16 +175,18 @@ AssessOverallLoopSimilarity <- function(antibodies,
                                         wL1 = 1 / 6,
                                         wL2 = 1 / 6,
                                         wL3 = 1 / 6) {
-  if (!(all(sapply(antibodies, function(x)
-    class(x) == "antibody")))) {
-    stop("antibodies argument should be passed a list of antibodies")
+  if (!all(sapply(antibodies, function(x) class(x) == "antibody"))) {
+    stop(
+      "The 'antibodies' parameter must be a list of valid antibody objects. ",
+      "Ensure that each element in the list is of class 'antibody'."
+    )
   }
   
-  # Check if the weights sum very close to 1 
   if (abs(sum(c(wH1, wH2, wH3, wL1, wL2, wL3)) - 1) > 0.01) {
     stop(
-      "wH1...wL3 arguments should be passed the weight of each loop H1..L3.
-       wH1...wL3 must sum to 1."
+      "The weights for loops (wH1...wL3) must sum to 1. ",
+      "Current sum: ", sum(c(wH1, wH2, wH3, wL1, wL2, wL3)), ". ",
+      "Please adjust the weights so that their sum is exactly 1."
     )
   }
   

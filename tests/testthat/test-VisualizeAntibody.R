@@ -21,12 +21,12 @@ mock_antibody <- list(
 class(mock_antibody) <- "antibody"
 
 test_that("VisualizeAntibody accepts only valid modes", {
-  expect_error(VisualizeAntibody(mock_antibody, mode = "invalid_mode"), "mode must be one of 'all_atoms', 'heavy' or 'backbone'")
-  expect_error(VisualizeAntibody(mock_antibody, mode = NULL), "mode must be one of 'all_atoms', 'heavy' or 'backbone'")
+  expect_error(VisualizeAntibody(mock_antibody, mode = "invalid_mode"), "Invalid input: 'mode' must be one of the following: all_atoms, heavy, backbone \nProvided value: invalid_mode")
+  expect_error(VisualizeAntibody(mock_antibody, mode = NULL), "Invalid input: 'mode' must be one of the following: all_atoms, heavy, backbone \nProvided value: ")
 })
 
 test_that("VisualizeAntibody accepts only valid antibody object", {
-  expect_error(VisualizeAntibody(list(), mode = "all_atoms"), "antibody argument should be passed an object of class antibody")
+  expect_error(VisualizeAntibody(list(), mode = "all_atoms"), "Invalid input: 'antibody' must be an object of class 'antibody'. Please ensure the input is created using the appropriate ReadAb functions.")
 })
 
 test_that("VisualizeAntibody runs without error for valid inputs", {

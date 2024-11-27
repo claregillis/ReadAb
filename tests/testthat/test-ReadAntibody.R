@@ -38,7 +38,7 @@ test_that("ReadAntibody handles valid inputs correctly", {
 test_that("ReadAntibody throws error with invalid pdbPath", {
   expect_error(
     ReadAntibody(pdbPath = "invalid_path.pdb"),
-    "pdbPath argument should be provided a string path to a PDB file"
+    "Invalid 'pdbPath': Please provide a valid file path to a PDB file as a string. Ensure the file exists and has the '.pdb' extension."
   )
 })
 
@@ -47,8 +47,7 @@ test_that("ReadAntibody throws error with invalid numbering scheme", {
     pdbPath = system.file("extdata", "7uja_chothia.pdb", package = "ReadAb"),
     numbering = "InvalidScheme"
   ),
-  regexp = "numbering argument should be provided a string indicating the\\s+renumbering scheme type\\.\\s+Must be one of\\s+\\['Kabat', 'Chothia', 'IMGT', 'AHo', 'Honneger'\\]")
-  fixed = FALSE
+  "Invalid 'numbering': The renumbering scheme must be one of the following: Chothia, AHo, IMGT, Honneger, Kabat. For example, 'Chothia' or 'IMGT'.")
 })
 
 test_that("ReadAntibody correctly identifies valid and invalid chains", {

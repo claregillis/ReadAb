@@ -44,11 +44,18 @@
 VisualizeAntibody <- function(antibody, mode = "all_atoms") {
   # Validate inputs
   if (!inherits(antibody, "antibody")) {
-    stop("The 'antibody' argument must be an object of class 'antibody'.")
+    stop("Invalid input: 'antibody' must be an object of class 'antibody'. Please ensure the input is created using the appropriate ReadAb functions.")
   }
+  
   valid_modes <- c("all_atoms", "heavy", "backbone")
   if (is.null(mode) || !(mode %in% valid_modes)) {
-    stop("The 'mode' argument must be one of: 'all_atoms', 'heavy', or 'backbone'.")
+    stop(
+      paste(
+        "Invalid input: 'mode' must be one of the following:",
+        paste(valid_modes, collapse = ", "),
+        "\nProvided value:", mode
+      )
+    )
   }
   
   # Select atom types based on mode
@@ -181,12 +188,21 @@ VisualizeAntibody <- function(antibody, mode = "all_atoms") {
 #'
 #' @export
 DisplaySimilarityPlot <- function(similarityMatrix, loop) {
-  if (!is.null(loop) && loop == 'all') {
-    title <- "Similarity across all loops"
-  } else if (is.null(loop) || !(loop %in% .ALL_LOOPS)) {
-    stop("loop argument must be one of 'H1', 'H2', 'H3', 'L1', 'L2', 'L3', or 'all'")
-  } else{
-    title <- paste("Similarity between", loop, "loops")
+  # Validate inputs
+  if (is.null(loop) || !(loop %in% c(.ALL_LOOPS, "all"))) {
+    stop(
+      paste(
+        "Invalid input: 'loop' must be one of 'H1', 'H2', 'H3', 'L1', 'L2', 'L3', or 'all'.",
+        "Ensure you are using the correct loop identifier. Provided value:", loop
+      )
+    )
+  }
+  
+  # Set title
+  title <- if (loop == "all") {
+    "Similarity across all loops"
+  } else {
+    paste("Similarity between", loop, "loops")
   }
   
   # Melt the similarity matrix for plotly
@@ -203,7 +219,10 @@ DisplaySimilarityPlot <- function(similarityMatrix, loop) {
     zmin = 0,
     zmax = 1
   ) %>%
-    plotly::layout(title = title)
+    plotly::layout(title = title,
+                   xaxis = list(title = "", showticklabels = TRUE),
+                   yaxis = list(title = "", showticklabels = TRUE)
+                   )
   
   return(heatmap)
 }
