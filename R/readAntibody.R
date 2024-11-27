@@ -46,6 +46,13 @@
 #'                               heavy = "H",
 #'                               light = "L",
 #'                               antigen = "A")
+#' 
+#' # Print the read antibodies
+#' print("Chothia antibody:")
+#' print(chothiaAntibody)
+#' 
+#' print("IMGT antibody: ")
+#' print(imgtAntibody)
 #'
 #'
 #' @importFrom bio3d read.pdb

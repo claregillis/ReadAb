@@ -67,5 +67,12 @@ imgtAntibody <- ReadAntibody(pdb = imgtPath,
                               light = "L",
                               antigen = "A")
 
+# Print the read antibodies
+print("Chothia antibody:")
+print(chothiaAntibody)
+
+print("IMGT antibody: ")
+print(imgtAntibody)
+
 
 }

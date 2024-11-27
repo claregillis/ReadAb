@@ -154,7 +154,9 @@ VisualizeAntibody <- function(antibody, mode = "all_atoms") {
 #'                                    Antibody3 = antibody3),
 #'                               'H3')
 #'
-#' DisplaySimilarityPlot(H3Sim, 'H3')
+#' heatmap <- DisplaySimilarityPlot(H3Sim, 'H3')
+#' print(heatmap)
+#' Sys.sleep(3)
 #'
 #' # Example 2:
 #' # Compare the loops of antibody1 and antibody2, weighting H3 higher than
