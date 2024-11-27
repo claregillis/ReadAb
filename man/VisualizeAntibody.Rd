@@ -31,10 +31,12 @@ antibody <- ReadAntibody(pdb = pdbPath,
 # View all atoms of the antibody
 plot <- VisualizeAntibody(antibody, mode = "all_atoms")
 print(plot)
+Sys.sleep(3)
 
 # View the antibody's heavy atoms
 plot <- VisualizeAntibody(antibody, mode = "heavy")
 print(plot)
+Sys.sleep(3)
 
 # View the backbone only
 plot <- VisualizeAntibody(antibody, mode = "backbone")
