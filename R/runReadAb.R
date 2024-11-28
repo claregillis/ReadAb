@@ -1,15 +1,16 @@
 #' Launch Shiny App for ReadAb
 #'
 #' A function that launches the Shiny app for ReadAb
-#' The purpose of this app is only to illustrate how a Shiny
-#' app works. The code has been placed in \code{./inst/shiny-scripts}.
+#' This app allows the user to upload antibody structures in PDB files and 
+#' analyze the similarity of thier loop sequences.
+#'  The code has been placed in \code{./inst/shiny-scripts}.
 #'
 #' @return No return value but open up a Shiny page.
 #'
 #' @examples
 #' \dontrun{
 #'
-#' ReadAb::runReadAb()
+#' ReadAb::RunReadAb()
 #' }
 #'
 #' @references
@@ -17,8 +18,7 @@
 #'
 #' @export
 #' @importFrom shiny runApp
-
-runReadAb <- function() {
+RunReadAb <- function() {
   appDir <- system.file("shiny-scripts",
                         package = "ReadAb")
   actionShiny <- shiny::runApp(appDir, display.mode = "normal")
