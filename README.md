@@ -46,7 +46,7 @@ library("ReadAb")
 To run the Shiny app:
 
 ``` r
-runReadAb()
+RunReadAb()
 ```
 
 ## Overview
