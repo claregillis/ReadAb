@@ -95,6 +95,8 @@ Generative AI was used to help with creating unit tests for each function. Speci
 
 ## References
 
+- Chang, W., J. Cheng, J. Allaire, C. Sievert, B. Schloerke, Y. Xie, J. Allen, J. McPherson, A. Dipert, B. Borges (2023). _shiny: Web Application Framework for R_. R package version 1.8.0, <https://CRAN.R-project.org/package=shiny>
+
 - Chiu, M. L., Goulet, D. R., Teplyakov, A., & Gilliland, G. L. (2019). Antibody structure and function: The basis for engineering therapeutics. *Antibodies* (Basel), 8(4), Article 55. https://doi.org/10.3390/antib8040055
 
 - Chothia, C., Lesk, A. M., Tramontano, A., Levitt, M., Smith-Gill, S. J., Air, G., et al. (1989). Conformations of immunoglobulin hypervariable regions. *Nature*, 342:6252, 877–883. Available from: [https://www.nature.com/articles/342877a0](https://www.nature.com/articles/342877a0)

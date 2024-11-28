@@ -119,6 +119,11 @@ on ChatGPT is available [here](https://openai.com/index/chatgpt/)
 
 ## References
 
+- Chang, W., J. Cheng, J. Allaire, C. Sievert, B. Schloerke, Y. Xie, J.
+  Allen, J. McPherson, A. Dipert, B. Borges (2023). *shiny: Web
+  Application Framework for R*. R package version 1.8.0,
+  <https://CRAN.R-project.org/package=shiny>
+
 - Chiu, M. L., Goulet, D. R., Teplyakov, A., & Gilliland, G. L. (2019).
   Antibody structure and function: The basis for engineering
   therapeutics. *Antibodies* (Basel), 8(4), Article 55.
